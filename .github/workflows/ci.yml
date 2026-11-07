@@ -32,3 +32,9 @@ jobs:
           version: latest
       - run: supabase db start
       - run: supabase test db
+      # Los tipos se generan desde la BD real: el archivo versionado debe coincidir.
+      - run: supabase gen types typescript --local --schema public > database.generated.ts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: database-types
+          path: database.generated.ts
