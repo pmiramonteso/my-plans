@@ -1,0 +1,18 @@
+{
+  "app": {
+    "name": "my-plans",
+    "tagline": "Plans, adventures and memories with your friends"
+  },
+  "errors": {
+    "not_authenticated": "Your session has expired. Please sign in again.",
+    "forbidden": "You don't have permission to do this.",
+    "not_found": "We couldn't find what you're looking for.",
+    "not_friends": "You can only invite your friends.",
+    "invalid_input": "Please check the form.",
+    "plan_closed": "This proposal no longer accepts replies.",
+    "event_closed": "This event is already closed.",
+    "event_not_started": "The event hasn't started yet.",
+    "conflict": "That already exists. Try another value.",
+    "unknown": "Something went wrong. Please try again."
+  }
+}

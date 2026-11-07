@@ -1,0 +1,18 @@
+{
+  "app": {
+    "name": "my-plans",
+    "tagline": "Plans, aventures i records amb els teus amics"
+  },
+  "errors": {
+    "not_authenticated": "La teva sessió ha caducat. Torna a iniciar sessió.",
+    "forbidden": "No tens permís per fer això.",
+    "not_found": "No hem trobat el que busques.",
+    "not_friends": "Només pots convidar els teus amics.",
+    "invalid_input": "Revisa les dades del formulari.",
+    "plan_closed": "Aquesta proposta ja no admet respostes.",
+    "event_closed": "Aquest esdeveniment ja està tancat.",
+    "event_not_started": "L'esdeveniment encara no ha començat.",
+    "conflict": "Ja existeix. Prova amb un altre valor.",
+    "unknown": "Alguna cosa ha fallat. Torna-ho a provar."
+  }
+}

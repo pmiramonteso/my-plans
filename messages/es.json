@@ -1,0 +1,18 @@
+{
+  "app": {
+    "name": "my-plans",
+    "tagline": "Planes, aventuras y recuerdos con tus amigos"
+  },
+  "errors": {
+    "not_authenticated": "Tu sesión ha caducado. Vuelve a iniciar sesión.",
+    "forbidden": "No tienes permiso para hacer esto.",
+    "not_found": "No hemos encontrado lo que buscas.",
+    "not_friends": "Solo puedes invitar a tus amigos.",
+    "invalid_input": "Revisa los datos del formulario.",
+    "plan_closed": "Esta propuesta ya no admite respuestas.",
+    "event_closed": "Este evento ya está cerrado.",
+    "event_not_started": "El evento todavía no ha empezado.",
+    "conflict": "Ya existe. Prueba con otro valor.",
+    "unknown": "Algo ha fallado. Inténtalo de nuevo."
+  }
+}
