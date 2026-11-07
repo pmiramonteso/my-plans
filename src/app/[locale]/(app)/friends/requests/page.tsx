@@ -2,11 +2,11 @@ import { Suspense } from "react";
 import { Inbox } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
-import { DemoButton } from "@/components/shared/demo-button";
 import { EmptyState } from "@/components/shared/empty-state";
 import { PageHeader, SectionHeader } from "@/components/shared/page-header";
 import { ListSkeleton } from "@/components/shared/skeletons";
 import { FriendRow } from "@/features/friends/components/friend-row";
+import { FriendshipButton } from "@/features/friends/components/friendship-button";
 import { getFriendRequests } from "@/features/friends/queries";
 import type { FriendRequest } from "@/features/friends/types";
 import { requestNow } from "@/lib/dates";
@@ -50,14 +50,7 @@ async function Requests() {
                 <FriendRow
                   profile={r.profile}
                   meta={when(r)}
-                  action={
-                    <div className="flex gap-2">
-                      <DemoButton size="sm">{t("accept")}</DemoButton>
-                      <DemoButton size="sm" variant="ghost">
-                        {t("decline")}
-                      </DemoButton>
-                    </div>
-                  }
+                  action={<FriendshipButton userId={r.profile.id} state="incoming" />}
                 />
               </li>
             ))}
@@ -73,11 +66,7 @@ async function Requests() {
                 <FriendRow
                   profile={r.profile}
                   meta={when(r)}
-                  action={
-                    <DemoButton size="sm" variant="outline">
-                      {t("cancelRequest")}
-                    </DemoButton>
-                  }
+                  action={<FriendshipButton userId={r.profile.id} state="outgoing" />}
                 />
               </li>
             ))}

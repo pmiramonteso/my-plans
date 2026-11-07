@@ -1,5 +1,6 @@
 import type { ProfileSummary } from "@/features/profiles/types";
 
+// Relación con otra persona vista desde el usuario con sesión.
 export type FriendshipState = "none" | "friends" | "outgoing" | "incoming";
 
 export type FriendRequest = {
@@ -10,4 +11,9 @@ export type FriendRequest = {
 
 export type Friend = ProfileSummary & {
   sharedCount: number; // experiencias realizadas juntos
+};
+
+export type SearchResult = {
+  profile: ProfileSummary;
+  state: FriendshipState;
 };

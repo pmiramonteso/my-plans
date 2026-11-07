@@ -190,7 +190,12 @@
     "emptyHint": "Busca a tus amigos por su nombre de usuario.",
     "noRequests": "No hay solicitudes pendientes",
     "sharedHistory": "Lo que habéis hecho juntos",
-    "viewSharedHistory": "Ver historial compartido"
+    "viewSharedHistory": "Ver historial compartido",
+    "remove": "Eliminar de amigos",
+    "noResults": "No hay nadie con ese nombre",
+    "results": "Resultados",
+    "notFriendsYet": "Aún no sois amigos",
+    "notFriendsHint": "Cuando lo seáis, aquí verás lo que habéis hecho juntos."
   },
   "history": {
     "title": "Historial",
@@ -242,7 +247,10 @@
     "preferences": "Preferencias",
     "language": "Idioma",
     "account": "Cuenta",
-    "logoutHint": "Cerrarás la sesión en este dispositivo."
+    "logoutHint": "Cerrarás la sesión en este dispositivo.",
+    "saved": "Cambios guardados",
+    "avatarError": "No se ha podido subir la foto.",
+    "avatarHint": "JPG, PNG o WebP."
   },
   "languages": {
     "es": "Español",
@@ -253,18 +261,26 @@
     "title": "Planes con los tuyos",
     "subtitle": "Propón ideas, organiza salidas y guarda lo vivido con tus amigos. Solo entre vosotros.",
     "google": "Continuar con Google",
-    "private": "Red privada: solo te ven tus amigos."
+    "private": "Red privada: solo te ven tus amigos.",
+    "error": "No hemos podido iniciar sesión. Inténtalo de nuevo."
   },
   "onboarding": {
     "title": "Elige tu nombre de usuario",
     "subtitle": "Así te encontrarán tus amigos. Podrás cambiarlo después.",
     "usernameHint": "De 3 a 20 caracteres: letras minúsculas, números y _.",
-    "submit": "Empezar"
+    "submit": "Empezar",
+    "usernameTaken": "Ese nombre de usuario ya está cogido."
   },
   "notFound": {
     "title": "Por aquí no hay camino",
     "description": "La página no existe o no tienes acceso a ella.",
     "back": "Volver al inicio"
+  },
+  "validation": {
+    "required": "Este campo es obligatorio.",
+    "tooLong": "Es demasiado largo.",
+    "username": "De 3 a 20 caracteres: letras minúsculas, números y _.",
+    "invalid": "El valor no es válido."
   },
   "errors": {
     "not_authenticated": "Tu sesión ha caducado. Vuelve a iniciar sesión.",

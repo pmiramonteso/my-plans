@@ -190,7 +190,12 @@
     "emptyHint": "Search for your friends by their username.",
     "noRequests": "No pending requests",
     "sharedHistory": "What you've done together",
-    "viewSharedHistory": "See shared history"
+    "viewSharedHistory": "See shared history",
+    "remove": "Remove friend",
+    "noResults": "Nobody with that name",
+    "results": "Results",
+    "notFriendsYet": "You're not friends yet",
+    "notFriendsHint": "Once you are, you'll see what you've done together here."
   },
   "history": {
     "title": "History",
@@ -242,7 +247,10 @@
     "preferences": "Preferences",
     "language": "Language",
     "account": "Account",
-    "logoutHint": "You'll be signed out on this device."
+    "logoutHint": "You'll be signed out on this device.",
+    "saved": "Changes saved",
+    "avatarError": "The photo couldn't be uploaded.",
+    "avatarHint": "JPG, PNG or WebP."
   },
   "languages": {
     "es": "Español",
@@ -253,18 +261,26 @@
     "title": "Plans with your people",
     "subtitle": "Suggest ideas, organise outings and keep what you've lived with your friends. Just between you.",
     "google": "Continue with Google",
-    "private": "Private network: only your friends can see you."
+    "private": "Private network: only your friends can see you.",
+    "error": "We couldn't sign you in. Please try again."
   },
   "onboarding": {
     "title": "Choose your username",
     "subtitle": "This is how your friends will find you. You can change it later.",
     "usernameHint": "3 to 20 characters: lowercase letters, numbers and _.",
-    "submit": "Get started"
+    "submit": "Get started",
+    "usernameTaken": "That username is already taken."
   },
   "notFound": {
     "title": "No trail this way",
     "description": "The page doesn't exist or you don't have access to it.",
     "back": "Back to home"
+  },
+  "validation": {
+    "required": "This field is required.",
+    "tooLong": "It is too long.",
+    "username": "3 to 20 characters: lowercase letters, numbers and _.",
+    "invalid": "The value is not valid."
   },
   "errors": {
     "not_authenticated": "Your session has expired. Please sign in again.",

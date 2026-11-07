@@ -190,7 +190,12 @@
     "emptyHint": "Cerca els teus amics pel seu nom d'usuari.",
     "noRequests": "No hi ha sol·licituds pendents",
     "sharedHistory": "El que heu fet junts",
-    "viewSharedHistory": "Veure l'historial compartit"
+    "viewSharedHistory": "Veure l'historial compartit",
+    "remove": "Eliminar dels amics",
+    "noResults": "No hi ha ningú amb aquest nom",
+    "results": "Resultats",
+    "notFriendsYet": "Encara no sou amics",
+    "notFriendsHint": "Quan ho sigueu, aquí veureu el que heu fet junts."
   },
   "history": {
     "title": "Historial",
@@ -242,7 +247,10 @@
     "preferences": "Preferències",
     "language": "Idioma",
     "account": "Compte",
-    "logoutHint": "Tancaràs la sessió en aquest dispositiu."
+    "logoutHint": "Tancaràs la sessió en aquest dispositiu.",
+    "saved": "Canvis desats",
+    "avatarError": "No s'ha pogut pujar la foto.",
+    "avatarHint": "JPG, PNG o WebP."
   },
   "languages": {
     "es": "Español",
@@ -253,18 +261,26 @@
     "title": "Plans amb els teus",
     "subtitle": "Proposa idees, organitza sortides i guarda el que has viscut amb els teus amics. Només entre vosaltres.",
     "google": "Continuar amb Google",
-    "private": "Xarxa privada: només et veuen els teus amics."
+    "private": "Xarxa privada: només et veuen els teus amics.",
+    "error": "No hem pogut iniciar la sessió. Torna-ho a provar."
   },
   "onboarding": {
     "title": "Tria el teu nom d'usuari",
     "subtitle": "Així et trobaran els teus amics. El podràs canviar després.",
     "usernameHint": "De 3 a 20 caràcters: lletres minúscules, números i _.",
-    "submit": "Començar"
+    "submit": "Començar",
+    "usernameTaken": "Aquest nom d'usuari ja està agafat."
   },
   "notFound": {
     "title": "Per aquí no hi ha camí",
     "description": "La pàgina no existeix o no hi tens accés.",
     "back": "Tornar a l'inici"
+  },
+  "validation": {
+    "required": "Aquest camp és obligatori.",
+    "tooLong": "És massa llarg.",
+    "username": "De 3 a 20 caràcters: lletres minúscules, números i _.",
+    "invalid": "El valor no és vàlid."
   },
   "errors": {
     "not_authenticated": "La teva sessió ha caducat. Torna a iniciar sessió.",

@@ -1,16 +1,17 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { History, Pencil, UserCheck } from "lucide-react";
+import { History, Lock, Pencil } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
-import { DemoNotice } from "@/components/shared/demo-notice";
+import { EmptyState } from "@/components/shared/empty-state";
 import { SectionHeader } from "@/components/shared/page-header";
 import { DetailSkeleton } from "@/components/shared/skeletons";
 import { UserAvatar } from "@/components/shared/user-avatar";
 import { Button } from "@/components/ui/button";
-import { getProfileByUsername } from "@/features/friends/queries";
-import { getCurrentProfile } from "@/features/profiles/queries";
+import { FriendshipButton } from "@/features/friends/components/friendship-button";
+import { getFriendshipWith } from "@/features/friends/queries";
+import { getCurrentProfile, getProfileByUsername } from "@/features/profiles/queries";
 import { StatGrid } from "@/features/stats/components/stat-grid";
 import { getMyStats, getSharedStats } from "@/features/stats/queries";
 import { pageTitle } from "@/lib/metadata";
@@ -20,7 +21,6 @@ export const generateMetadata = pageTitle("nav.profile");
 export default function ProfilePage({ params }: PageProps<"/[locale]/u/[username]">) {
   return (
     <div className="mx-auto max-w-3xl">
-      <DemoNotice />
       <Suspense fallback={<DetailSkeleton />}>
         <Profile params={params} />
       </Suspense>
@@ -40,8 +40,13 @@ async function Profile({ params }: Pick<PageProps<"/[locale]/u/[username]">, "pa
   if (!profile) notFound();
 
   const isMe = profile.id === me.id;
-  // TODO(Fase 3): estado real de la amistad (none / outgoing / incoming / friends).
-  const stats = isMe ? await getMyStats() : await getSharedStats(username);
+  const friendship = isMe ? "none" : await getFriendshipWith(profile.id);
+  // Las estadísticas compartidas solo existen entre amigos (la RPC lo exige).
+  const stats = isMe
+    ? await getMyStats()
+    : friendship === "friends"
+      ? await getSharedStats(profile)
+      : null;
 
   return (
     <>
@@ -60,29 +65,30 @@ async function Profile({ params }: Pick<PageProps<"/[locale]/u/[username]">, "pa
             </Link>
           </Button>
         ) : (
-          <Button variant="secondary" disabled>
-            <UserCheck data-icon="inline-start" />
-            {tNav("friends")}
-          </Button>
+          <FriendshipButton userId={profile.id} state={friendship} size="default" />
         )}
       </header>
 
-      <section className="space-y-4">
-        <SectionHeader
-          title={isMe ? tNav("history") : t("sharedHistory")}
-          href={isMe ? "/history" : `/history/with/${profile.username}`}
-          linkLabel={isMe ? tCommon("seeAll") : t("viewSharedHistory")}
-        />
-        <StatGrid stats={stats} />
-        {!isMe && (
-          <Button asChild variant="outline" className="w-full sm:hidden">
-            <Link href={`/history/with/${profile.username}`}>
-              <History data-icon="inline-start" />
-              {t("viewSharedHistory")}
-            </Link>
-          </Button>
-        )}
-      </section>
+      {stats ? (
+        <section className="space-y-4">
+          <SectionHeader
+            title={isMe ? tNav("history") : t("sharedHistory")}
+            href={isMe ? "/history" : `/history/with/${profile.username}`}
+            linkLabel={isMe ? tCommon("seeAll") : t("viewSharedHistory")}
+          />
+          <StatGrid stats={stats} />
+          {!isMe && (
+            <Button asChild variant="outline" className="w-full sm:hidden">
+              <Link href={`/history/with/${profile.username}`}>
+                <History data-icon="inline-start" />
+                {t("viewSharedHistory")}
+              </Link>
+            </Button>
+          )}
+        </section>
+      ) : (
+        <EmptyState icon={Lock} title={t("notFriendsYet")} description={t("notFriendsHint")} />
+      )}
     </>
   );
 }
