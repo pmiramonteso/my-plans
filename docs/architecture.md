@@ -31,7 +31,7 @@ Documento vivo. Recoge la propuesta aprobada en la Fase 1 y las decisiones tomad
 | Estado | RSC + `revalidatePath` + estado local | Sin store global. La única parte en tiempo real es el contador de notificaciones (Supabase Realtime). |
 | UI | Tailwind CSS v4 + shadcn/ui + lucide-react | Componentes accesibles y personalizables. |
 | Formularios | React Hook Form + Zod | El **mismo esquema** en el cliente y en el servidor, más `CHECK` en la BD. |
-| i18n | `next-intl` (sin prefijo en la URL) | Locale guardado en el perfil y en una cookie. Al ser una app privada, no hace falta SEO por idioma. |
+| i18n | `next-intl` (sin prefijo en la URL) | Locale guardado en el perfil y en una cookie. El proxy reescribe internamente a `/[locale]/…` (ver §6.9). Al ser una app privada, no hace falta SEO por idioma. |
 | Imágenes | Compresión en el cliente (WebP, 2560 px + miniatura de 480 px), buckets privados, signed URLs | No depende del plan Pro de Supabase y ninguna foto es pública. |
 | Fechas | `date-fns` + `@date-fns/tz` | Calendario propio y zonas horarias correctas. |
 | Pruebas | pgTAP (RLS) · Vitest (unitarias) · Playwright (E2E) | Las RLS son la seguridad real, así que se prueban directamente en la BD. |
@@ -189,7 +189,7 @@ Una propuesta puede dar lugar a **varios eventos** (repetir una salida). Esto pr
 my-plans/
 ├─ messages/{es,en,ca}.json          # textos de la interfaz
 ├─ src/
-│  ├─ app/
+│  ├─ app/[locale]/                   # segmento interno: la URL visible no lo lleva (§6.9)
 │  │  ├─ (public)/login/
 │  │  ├─ auth/callback/route.ts
 │  │  ├─ onboarding/
@@ -321,6 +321,15 @@ No cambia ninguna tabla ni ninguna consulta de la app.
 * **Helpers en el esquema `private`**, que la API no expone. Solo `authenticated` puede ejecutar los que usan las políticas.
 * **Next 16 + Cache Components:** leer la sesión o el idioma es dinámico. El *shell* estático se prerenderiza y el contenido del usuario llega en streaming detrás de `<Suspense>` (se aplica en la Fase 2).
 * **Claves de Supabase:** se usa la nueva *Publishable key* (`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`). La *Secret key* no se usa en la app.
+
+### 6.9 Notas de implementación (Fase 2)
+
+* **Idioma por reescritura:** `src/proxy.ts` elige el idioma (cookie `NEXT_LOCALE` → `Accept-Language`) y reescribe a `/[locale]/…` sin cambiar la URL. El layout raíz y `i18n/request.ts` lo leen con `next/root-params`, así que cada idioma tiene su *shell* prerenderizado. Las URLs con prefijo (`/ca/agenda`) redirigen a la versión sin prefijo. `/auth/*` no se reescribe (route handlers).
+* **Shell estático + streaming:** la navegación y los títulos son estáticos. Todo lo que depende de la sesión, de `params`/`searchParams` o de la hora va dentro de `<Suspense>` con un *skeleton*. La hora se lee con `requestNow()` (`lib/dates.ts`), nunca con `Date.now()` en el render.
+* **Datos de ejemplo:** las pantallas leen de `features/<dominio>/queries.ts`, que de momento devuelven `src/mocks/data.ts`. Cada fase sustituye esas funciones por consultas a Supabase sin tocar las páginas. Las acciones aún no conectadas usan `DemoButton`/`toast` y llevan un `TODO(Fase N)`.
+* **Vista previa sin Supabase:** con `DESIGN_PREVIEW=1` en `.env.local` el proxy no exige sesión. Solo funciona con `next dev` (en producción no tiene efecto).
+* **Diseño "Outdoor cálido":** tokens en `src/app/globals.css` (crema `#F7F3EC`, verde bosque `#2F5D46`, terracota `#C8643B`), con tema claro y oscuro (`next-themes`, clase `.dark`). Los colores de categoría usan los nombres de `categories.color` (`pine`, `granite`…). Tipografía: Fraunces (títulos) e Inter (texto). La terracota no llega a 4.5:1 sobre crema: para texto se usa `accent-strong`.
+* **shadcn/ui** (estilo `radix-nova`) en `src/components/ui/`; botones e inputs ampliados a 40 px de alto para uso táctil.
 
 ### 6.8 Pendiente de decidir
 
