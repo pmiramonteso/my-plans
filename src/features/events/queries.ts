@@ -167,6 +167,62 @@ export async function getEventsBetween(from: Date, to: Date): Promise<EventSumma
   return (await hydrate(supabase, me.id, events)).summaries;
 }
 
+// Ya empezados y sin cerrar, de los que soy organizador: pendientes de marcar
+// como realizados (complete_event).
+export async function getEventsToComplete(): Promise<EventSummary[]> {
+  if (DESIGN_PREVIEW) {
+    const [{ events }, now] = await Promise.all([loadMocks(), requestNow()]);
+    return events.filter(
+      (e) => e.status === "scheduled" && e.myRsvp === null && new Date(e.startsAt) <= now,
+    );
+  }
+
+  const [me, supabase, now] = await Promise.all([
+    getCurrentProfile(),
+    createClient(),
+    requestNow(),
+  ]);
+  const hosting = unwrap(
+    await supabase
+      .from("event_participants")
+      .select("event_id")
+      .eq("user_id", me.id)
+      .in("role", ["host", "cohost"]),
+  );
+  if (hosting.length === 0) return [];
+  const events = unwrap(
+    await supabase
+      .from("events")
+      .select(EVENT_COLUMNS)
+      .in(
+        "id",
+        hosting.map((r) => r.event_id),
+      )
+      .is("deleted_at", null)
+      .eq("status", "scheduled")
+      .lte("starts_at", now.toISOString())
+      .order("starts_at", { ascending: false })
+      .limit(20),
+  );
+  return (await hydrate(supabase, me.id, events)).summaries;
+}
+
+// Resúmenes de unos eventos concretos (p. ej. los del historial), del más
+// reciente al más antiguo. La RLS filtra los que no puedo ver.
+export async function getEventSummaries(ids: string[]): Promise<EventSummary[]> {
+  if (ids.length === 0) return [];
+  const [me, supabase] = await Promise.all([getCurrentProfile(), createClient()]);
+  const events = unwrap(
+    await supabase
+      .from("events")
+      .select(EVENT_COLUMNS)
+      .in("id", ids)
+      .is("deleted_at", null)
+      .order("starts_at", { ascending: false }),
+  );
+  return (await hydrate(supabase, me.id, events)).summaries;
+}
+
 export async function getEvent(id: string): Promise<EventDetail | null> {
   if (DESIGN_PREVIEW) return (await loadMocks()).eventDetail(id);
 

@@ -72,7 +72,18 @@
     "previous": "Mes anterior",
     "next": "Mes següent",
     "dayEvents": "{count, plural, =0 {Sense esdeveniments} one {# esdeveniment} other {# esdeveniments}}",
-    "empty": "Res programat aquest mes"
+    "empty": "Res programat aquest mes",
+    "filterLabel": "Filtra els esdeveniments",
+    "filter": {
+      "all": "Tots",
+      "going": "Hi vaig",
+      "pending": "Sense resposta",
+      "hosting": "Organitzo"
+    },
+    "emptyFiltered": "No hi ha esdeveniments amb aquest filtre aquest mes",
+    "toComplete": "Per tancar",
+    "toCompleteHint": "Ja han passat. Marca qui hi va venir perquè comptin a l'historial.",
+    "completeShort": "Tancar"
   },
   "events": {
     "going": "{count, plural, =0 {Ningú confirmat encara} one {# hi va} other {# hi van}}",
@@ -117,7 +128,8 @@
     "cancelShort": "Cancel·lar",
     "cancelTitle": "Vols cancel·lar l'esdeveniment?",
     "cancelHint": "Avisarem els participants. Si venia d'una proposta, aquesta torna a quedar oberta.",
-    "cancelledHint": "Aquest esdeveniment s'ha cancel·lat."
+    "cancelledHint": "Aquest esdeveniment s'ha cancel·lat.",
+    "attendeesCount": "{count, plural, one {# assistent} other {# assistents}}"
   },
   "plans": {
     "title": "Propostes",
@@ -219,7 +231,11 @@
     "with": "Amb {name}",
     "empty": "Encara no hi ha experiències fetes",
     "emptyHint": "Quan marquis un esdeveniment com a fet, apareixerà aquí.",
-    "timeline": "Experiències"
+    "timeline": "Experiències",
+    "filterYear": "Any",
+    "allYears": "Sempre",
+    "allCategories": "Totes",
+    "emptyFiltered": "No hi ha experiències amb aquests filtres"
   },
   "stats": {
     "total": "Experiències",
@@ -298,7 +314,8 @@
     "username": "De 3 a 20 caràcters: lletres minúscules, números i _.",
     "invalid": "El valor no és vàlid.",
     "url": "Escriu un enllaç que comenci per http:// o https://.",
-    "endBeforeStart": "El final no pot ser anterior a l'inici."
+    "endBeforeStart": "El final no pot ser anterior a l'inici.",
+    "attendeesRequired": "Marca almenys una persona que hi assistís."
   },
   "errors": {
     "not_authenticated": "La teva sessió ha caducat. Torna a iniciar sessió.",

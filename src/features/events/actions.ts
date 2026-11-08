@@ -10,6 +10,7 @@ import { removeCover } from "@/lib/storage";
 import { createClient } from "@/lib/supabase/server";
 
 import {
+  completeEventSchema,
   eventCoverSchema,
   eventIdSchema,
   eventSchema,
@@ -122,6 +123,14 @@ export const cancelEvent = createAction(eventIdSchema, async ({ id }) => {
   const supabase = await createClient();
   unwrap(await supabase.rpc("cancel_event", { p_event: id }));
   refresh();
+});
+
+// Marca el evento como realizado: solo los asistentes suman en historial y
+// estadísticas. Los asistentes reciben 'event_completed' (trigger).
+export const completeEvent = createAction(completeEventSchema, async ({ id, attendees }) => {
+  const supabase = await createClient();
+  unwrap(await supabase.rpc("complete_event", { p_event: id, p_attendees: attendees }));
+  redirect(`/events/${id}`);
 });
 
 // Borrado lógico (solo el creador).

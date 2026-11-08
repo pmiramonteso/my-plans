@@ -339,7 +339,7 @@ No cambia ninguna tabla ni ninguna consulta de la app.
 * **Errores en formularios:** los esquemas Zod usan claves (`validation.<clave>`) como mensaje. `reportActionError()` (`lib/form.ts`) pinta los errores de campo o un toast con `errors.<código>`. Un `conflict` en `username` se muestra como "ya está cogido".
 * **Avatares:** se comprimen en el navegador (`lib/images.ts`, 512 px WebP) y se suben con la sesión a `avatars/{id}/{uuid}.webp`. `setAvatar` guarda la URL pública y borra la foto anterior.
 * **Tipos de la BD:** el job `database` de CI genera `database.generated.ts` (artefacto `database-types`) y falla si `src/types/database.ts` no coincide. La CLI está fijada a la misma versión que la devDependency.
-* **Datos reales vs. de ejemplo:** perfil, amigos, solicitudes, búsqueda, estadísticas y el contador de notificaciones ya leen de Supabase. Historial y la lista de notificaciones siguen con `src/mocks` hasta sus fases (desde la Fase 4, propuestas, eventos y agenda ya son reales). Con `DESIGN_PREVIEW=1` todo usa datos de ejemplo.
+* **Datos reales vs. de ejemplo:** perfil, amigos, solicitudes, búsqueda, estadísticas y el contador de notificaciones ya leen de Supabase. La lista de notificaciones sigue con `src/mocks` hasta su fase (desde la Fase 4, propuestas, eventos y agenda ya son reales; desde la Fase 5, también el historial). Con `DESIGN_PREVIEW=1` todo usa datos de ejemplo.
 
 ### 6.11 Notas de implementación (Fase 4)
 
@@ -349,7 +349,18 @@ No cambia ninguna tabla ni ninguna consulta de la app.
 * **Respuestas:** interés con `set_plan_interest`. El RSVP es un update de mi fila o, si el evento es de visibilidad `friends` y no estaba invitado, un insert propio. Se pintan de forma optimista (`useOptimistic`).
 * **Portadas:** la política de `covers` exige que la propuesta o el evento existan, así que el flujo es guardar → comprimir (1600 px WebP) → subir a `covers/{plans|events}/{id}/{uuid}.webp` → `setPlanCover`/`setEventCover`, que borra la anterior. Al leer se firman en lote (`lib/storage.ts`, 1 h).
 * **Formularios:** React Hook Form con el esquema Zod de cliente (`eventFormSchema` valida sin transformar). El action recibe los valores crudos y vuelve a validar con el esquema de servidor (que sí transforma).
-* **Pendiente para la Fase 5:** marcar como realizado (`complete_event`), historial y agenda con filtros. La página `/events/[id]/complete` sigue siendo de muestra.
+* **Pendiente para la Fase 5:** marcar como realizado (`complete_event`), historial y agenda con filtros. La página `/events/[id]/complete` sigue siendo de muestra. *(Hecho en la Fase 5, ver §6.12.)*
+
+### 6.12 Notas de implementación (Fase 5)
+
+* **Marcar como realizado:** action `completeEvent` sobre la RPC `complete_event`. `/events/[id]/complete` solo se abre para el organizador con el evento programado y ya empezado; si no, redirige al detalle (la RPC lo vuelve a comprobar). Vienen marcados el organizador y quien confirmó; hace falta al menos un asistente (`validation.attendeesRequired`). Los asistentes que no son participantes se ignoran.
+* **Por cerrar:** la agenda muestra arriba los eventos que organizo, ya empezados y sin cerrar (`getEventsToComplete`).
+* **Agenda:** usa la zona horaria del perfil. Filtro `?f=all|going|pending|hosting` (por mi respuesta; `hosting` = organizo) que se aplica al calendario y a la lista, y se conserva al cambiar de mes. Botón "Hoy" fuera del mes actual.
+* **Historial:** lee de `completed_participations` (solo eventos realizados con `attended = true`). El compartido son los eventos en los que aparecen los dos usuarios. Filtros `?y=<año>` (también filtra las estadísticas: `p_year` de `get_user_stats`/`get_shared_stats`) y `?c=<categoría>`. El año es el de la zona de cada evento, igual que en `compute_stats`. La lógica de filtros es pura (`features/history/filters.ts`, `features/agenda/filters.ts`) y tiene pruebas unitarias.
+* **`FilterTabs`** acepta `query` para conservar el resto de parámetros de la URL (`hrefWith`).
+* **Sesión y Partial Prefetching:** `createClient()` (servidor) hace `await connection()` antes de leer las cookies, porque `getClaims()` compara la caducidad del JWT con `Date.now()` y con Partial Prefetching las cookies ya están disponibles en el prerender en tiempo de ejecución.
+* **Pruebas pgTAP:** `04_history.test.sql` (cerrar, asistentes, historial compartido, año y visibilidad). Las pruebas solo tocan los perfiles `@test.dev`, así que pasan aunque la BD local tenga usuarios reales.
+* **Pendiente:** paginación keyset del historial (hoy se cargan todos los eventos realizados); la galería y la subida de fotos son de la Fase 6.
 
 ### 6.8 Pendiente de decidir
 

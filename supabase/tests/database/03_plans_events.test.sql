@@ -19,7 +19,7 @@ insert into auth.users (id, email, raw_user_meta_data) values
   ('00000000-0000-0000-0000-000000000b02', 'hugo@test.dev', '{"full_name": "Hugo"}'),
   ('00000000-0000-0000-0000-000000000c03', 'iris@test.dev', '{"full_name": "Iris"}'),
   ('00000000-0000-0000-0000-000000000d04', 'jon@test.dev',  '{"full_name": "Jon"}');
-update public.profiles set username = lower(display_name);
+update public.profiles set username = lower(display_name) where id in (select id from auth.users where email like '%@test.dev');
 insert into public.friendships (user_a, user_b, requested_by, status) values
   ('00000000-0000-0000-0000-000000000a01', '00000000-0000-0000-0000-000000000b02',
    '00000000-0000-0000-0000-000000000a01', 'accepted'),

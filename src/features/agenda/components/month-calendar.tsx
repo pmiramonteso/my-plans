@@ -12,25 +12,29 @@ import {
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 
+import { hrefWith } from "@/components/shared/filter-tabs";
 import { Button } from "@/components/ui/button";
 import { CATEGORIES, CATEGORY_TONE } from "@/features/categories/config";
 import type { EventSummary } from "@/features/events/types";
 import { capitalize, cn } from "@/lib/utils";
 
 // Calendario mensual propio (lunes primero). Cada día muestra un punto por
-// evento con el color de su categoría.
+// evento con el color de su categoría. `query` conserva el filtro al cambiar de mes.
 export function MonthCalendar({
   month,
   today,
   timeZone,
   events,
+  query,
 }: {
   month: TZDate; // primer día del mes, en la zona del usuario
   today: TZDate;
   timeZone: string;
   events: EventSummary[];
+  query?: Record<string, string | null | undefined>;
 }) {
   const t = useTranslations("agenda");
+  const tCommon = useTranslations("common");
   const format = useFormatter();
 
   const gridStart = startOfWeek(startOfMonth(month), { weekStartsOn: 1 });
@@ -41,7 +45,7 @@ export function MonthCalendar({
   const eventsOn = (day: Date) =>
     events.filter((e) => isSameDay(new TZDate(e.startsAt, timeZone), day));
 
-  const monthParam = (d: Date) => `?m=${formatDate(d, "yyyy-MM")}`;
+  const monthParam = (d: Date) => hrefWith(query, "m", formatDate(d, "yyyy-MM"));
 
   return (
     <div className="bg-card rounded-2xl border p-3 sm:p-4">
@@ -49,7 +53,14 @@ export function MonthCalendar({
         <h2 className="pl-1 text-xl font-semibold">
           {capitalize(format.dateTime(month, { month: "long", year: "numeric", timeZone }))}
         </h2>
-        <div className="flex gap-1">
+        <div className="flex items-center gap-1">
+          {!isSameMonth(month, today) && (
+            <Button asChild variant="ghost" size="sm">
+              <Link href={hrefWith(query, "m", null)} scroll={false}>
+                {tCommon("today")}
+              </Link>
+            </Button>
+          )}
           <Button asChild variant="ghost" size="icon-sm">
             <Link href={monthParam(addMonths(month, -1))} aria-label={t("previous")} scroll={false}>
               <ChevronLeft />
