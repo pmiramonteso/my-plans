@@ -32,7 +32,8 @@ export const test = base.extend<Fixtures>({
       const tag = `${testInfo.workerIndex}${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`;
       const username = `${name}_${tag}`.toLowerCase().slice(0, 20);
       const email = `${username}@e2e.test`;
-      const password = `e2e-${crypto.randomUUID()}`;
+      // Aleatoria en cada ejecución, para un usuario local que se borra al acabar.
+      const password = `e2e-${crypto.randomUUID()}`; // ggignore
       const displayName = `${name[0].toUpperCase()}${name.slice(1)} E2E`;
       const { data, error } = await admin().auth.admin.createUser({
         email,
