@@ -21,12 +21,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { hasPeaks } from "@/features/categories/config";
 import { createEvent, setEventCover, updateEvent } from "@/features/events/actions";
 import {
   eventFormSchema,
   type EventFormOutput,
   type EventFormValues,
 } from "@/features/events/schemas";
+import { PeakPicker } from "@/features/peaks/components/peak-picker";
+import type { PeakSelection } from "@/features/peaks/schemas";
 import type { ProfileSummary } from "@/features/profiles/types";
 import { fieldMessage, reportActionError } from "@/lib/form";
 import { attachCover } from "@/lib/upload-cover";
@@ -44,6 +47,7 @@ const EMPTY: Partial<EventFormValues> = {
   endDate: "",
   visibility: "invited",
   invitees: [],
+  peaks: [],
 };
 
 // Tres usos: crear, organizar una propuesta (planId, prerrellenado con los
@@ -73,12 +77,15 @@ export function EventForm({
   });
   const { errors } = form.formState;
   const allDay = useWatch({ control: form.control, name: "allDay" });
+  const category = useWatch({ control: form.control, name: "category" });
   const msg = (m?: string) => fieldMessage(t, m);
 
   // El action recibe los valores del formulario tal cual y los valida de nuevo.
+  // Si la categoría no lleva cimas, se quitan las que hubiera.
   const onSubmit = form.handleSubmit(() =>
     startTransition(async () => {
-      const values = form.getValues();
+      const raw = form.getValues();
+      const values = hasPeaks(raw.category) ? raw : { ...raw, peaks: [] };
       const result = eventId
         ? await updateEvent({ ...values, id: eventId })
         : await createEvent({ ...values, planId });
@@ -204,6 +211,26 @@ export function EventForm({
             />
           </Field>
         </div>
+        {hasPeaks(category) && (
+          <Field
+            label={t("peaks.label")}
+            hint={t("peaks.ascentHint")}
+            optional
+            error={msg(errors.peaks?.message)}
+          >
+            <Controller
+              control={form.control}
+              name="peaks"
+              render={({ field }) => (
+                <PeakPicker
+                  withAscents
+                  value={(field.value ?? []) as PeakSelection[]}
+                  onChange={field.onChange}
+                />
+              )}
+            />
+          </Field>
+        )}
       </FormSection>
 
       <FormSection>

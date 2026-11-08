@@ -28,6 +28,7 @@ describe("planSchema", () => {
       difficulty: 4,
       visibility: "invited",
       invitees: [A, B],
+      peaks: [], // sin cimas en el formulario
     });
   });
 

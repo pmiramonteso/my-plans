@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useForm, useWatch } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
 import {
@@ -20,6 +20,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { hasPeaks } from "@/features/categories/config";
+import { PeakPicker } from "@/features/peaks/components/peak-picker";
+import type { PeakSelection } from "@/features/peaks/schemas";
 import { createPlan, setPlanCover, updatePlan } from "@/features/plans/actions";
 import { planSchema, type PlanFormOutput, type PlanFormValues } from "@/features/plans/schemas";
 import type { ProfileSummary } from "@/features/profiles/types";
@@ -34,6 +37,7 @@ const EMPTY: Partial<PlanFormValues> = {
   difficulty: null,
   visibility: "invited",
   invitees: [],
+  peaks: [],
 };
 
 // Crear (sin planId) o editar. Al editar, `friends` son solo los que aún no
@@ -59,12 +63,15 @@ export function PlanForm({
   });
   const { errors } = form.formState;
   const visibility = useWatch({ control: form.control, name: "visibility" });
+  const category = useWatch({ control: form.control, name: "category" });
   const msg = (m?: string) => fieldMessage(t, m);
 
   // El action recibe los valores del formulario tal cual y los valida de nuevo.
+  // Si la categoría no lleva cimas, se quitan las que hubiera.
   const onSubmit = form.handleSubmit(() =>
     startTransition(async () => {
-      const values = form.getValues();
+      const raw = form.getValues();
+      const values = hasPeaks(raw.category) ? raw : { ...raw, peaks: [] };
       const result = planId
         ? await updatePlan({ ...values, id: planId })
         : await createPlan(values);
@@ -141,6 +148,25 @@ export function PlanForm({
             />
           </Field>
         </div>
+        {hasPeaks(category) && (
+          <Field
+            label={t("peaks.label")}
+            hint={t("peaks.hint")}
+            optional
+            error={msg(errors.peaks?.message)}
+          >
+            <Controller
+              control={form.control}
+              name="peaks"
+              render={({ field }) => (
+                <PeakPicker
+                  value={(field.value ?? []) as PeakSelection[]}
+                  onChange={field.onChange}
+                />
+              )}
+            />
+          </Field>
+        )}
         <Field label={t("create.fields.difficulty")} optional>
           <DifficultyPicker field={form.register("difficulty")} />
         </Field>

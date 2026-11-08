@@ -318,7 +318,8 @@
     "invalid": "El valor no es válido.",
     "url": "Escribe un enlace que empiece por http:// o https://.",
     "endBeforeStart": "El final no puede ser anterior al inicio.",
-    "attendeesRequired": "Marca al menos a una persona que asistiera."
+    "attendeesRequired": "Marca al menos a una persona que asistiera.",
+    "tooMany": "Has elegido demasiados."
   },
   "errors": {
     "not_authenticated": "Tu sesión ha caducado. Vuelve a iniciar sesión.",
@@ -345,5 +346,21 @@
     "delete": "Eliminar",
     "deleteTitle": "¿Eliminar la foto?",
     "deleteHint": "Se borrará para todos los participantes. Esta acción no se puede deshacer."
+  },
+  "peaks": {
+    "label": "Cimas",
+    "hint": "Busca la cima o añádela si aún no está en el catálogo.",
+    "ascentTitle": "La ascensión",
+    "ascentHint": "El desnivel y los km de cada cima suman en las estadísticas.",
+    "search": "Buscar una cima…",
+    "noResults": "No encontramos esa cima.",
+    "create": "Añadir «{name}»",
+    "altitudeFor": "Altitud de {name} (m)",
+    "add": "Añadir",
+    "remove": "Quitar {name}",
+    "elevation": "Desnivel (m)",
+    "elevationShort": "Desnivel",
+    "distance": "Distancia (km)",
+    "distanceShort": "Km"
   }
 }

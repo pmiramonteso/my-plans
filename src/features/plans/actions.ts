@@ -4,6 +4,7 @@ import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { CATEGORY_IDS } from "@/features/categories/config";
+import { syncPeaks } from "@/features/peaks/sync";
 import { getSessionProfile } from "@/features/profiles/queries";
 import { createAction, unwrap } from "@/lib/action";
 import { removeCover } from "@/lib/storage";
@@ -34,6 +35,7 @@ export const createPlan = createAction(planSchema, async (input) => {
       p_invitee_ids: input.invitees,
     }),
   );
+  await syncPeaks(supabase, { plan: id }, input.peaks);
   return { id };
 });
 
@@ -67,6 +69,7 @@ export const updatePlan = createAction(updatePlanSchema, async ({ id, ...input }
       ),
     );
   }
+  await syncPeaks(supabase, { plan: id }, input.peaks);
   refresh();
   return { id };
 });

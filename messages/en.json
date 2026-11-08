@@ -318,7 +318,8 @@
     "invalid": "The value is not valid.",
     "url": "Enter a link starting with http:// or https://.",
     "endBeforeStart": "The end can't be before the start.",
-    "attendeesRequired": "Select at least one person who attended."
+    "attendeesRequired": "Select at least one person who attended.",
+    "tooMany": "You've picked too many."
   },
   "errors": {
     "not_authenticated": "Your session has expired. Please sign in again.",
@@ -345,5 +346,21 @@
     "delete": "Delete",
     "deleteTitle": "Delete this photo?",
     "deleteHint": "It will be removed for all participants. This can't be undone."
+  },
+  "peaks": {
+    "label": "Summits",
+    "hint": "Search for the summit or add it if it isn't in the catalogue yet.",
+    "ascentTitle": "The ascent",
+    "ascentHint": "Each summit's elevation gain and distance count towards the stats.",
+    "search": "Search for a summit…",
+    "noResults": "We couldn't find that summit.",
+    "create": "Add “{name}”",
+    "altitudeFor": "Altitude of {name} (m)",
+    "add": "Add",
+    "remove": "Remove {name}",
+    "elevation": "Elevation gain (m)",
+    "elevationShort": "Gain",
+    "distance": "Distance (km)",
+    "distanceShort": "Km"
   }
 }

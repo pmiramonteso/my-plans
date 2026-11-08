@@ -58,6 +58,7 @@ async function Schedule({ params }: Pick<PageProps<"/[locale]/plans/[id]/schedul
           invitees: plan.invitations
             .filter((i) => i.interest === "interested")
             .map((i) => i.profile.id),
+          peaks: plan.peaks,
         }}
       />
     </>

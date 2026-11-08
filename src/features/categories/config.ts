@@ -38,6 +38,11 @@ export function categoryFromId(id: number): CategorySlug {
   return CATEGORY_SLUGS.find((slug) => CATEGORY_IDS[slug] === id) ?? "other";
 }
 
+// Categorías de montaña: admiten cimas (plan_peaks / event_peaks).
+export function hasPeaks(category: string | undefined) {
+  return category === "summit" || category === "hiking";
+}
+
 export type CategoryColor = "pine" | "granite" | "plum" | "ember" | "sky" | "sunrise" | "stone";
 
 export const CATEGORIES: Record<CategorySlug, { icon: LucideIcon; color: CategoryColor }> = {

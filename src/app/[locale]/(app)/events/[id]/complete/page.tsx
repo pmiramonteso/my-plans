@@ -43,7 +43,7 @@ async function Complete({ params }: Pick<PageProps<"/[locale]/events/[id]/comple
         backHref={`/events/${event.id}`}
         backLabel={event.title}
       />
-      <AttendanceForm eventId={event.id} participants={event.participants} />
+      <AttendanceForm eventId={event.id} participants={event.participants} peaks={event.peaks} />
     </>
   );
 }

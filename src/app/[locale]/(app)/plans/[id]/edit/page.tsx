@@ -51,6 +51,7 @@ async function Edit({ params }: Pick<PageProps<"/[locale]/plans/[id]/edit">, "pa
             ? (String(plan.difficulty) as "1" | "2" | "3" | "4" | "5")
             : null,
           visibility: plan.visibility,
+          peaks: plan.peaks,
         }}
       />
     </>

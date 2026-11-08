@@ -57,6 +57,13 @@ async function Edit({ params }: Pick<PageProps<"/[locale]/events/[id]/edit">, "p
           link: event.externalUrl ?? "",
           extraInfo: event.extraInfo ?? "",
           visibility: event.visibility === "friends" ? "friends" : "invited",
+          peaks: event.peaks.map((p) => ({
+            id: p.id,
+            name: p.name,
+            altitudeM: p.altitudeM,
+            elevationGainM: p.elevationGainM?.toString() ?? "",
+            distanceKm: p.distanceKm?.toString() ?? "",
+          })),
           ...fromEventTimes(event, event.timezone),
         }}
       />

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { CATEGORY_SLUGS } from "@/features/categories/config";
+import { ascentSchema, MAX_PEAKS, peakSelectionSchema } from "@/features/peaks/schemas";
 import { timezoneSchema } from "@/features/profiles/schemas";
 import { optionalText, optionalUrl, requiredText, uuidList } from "@/lib/validation";
 
@@ -24,6 +25,7 @@ export const eventFieldsSchema = z.object({
   visibility: z.enum(["invited", "friends"]),
   invitees: uuidList,
   timezone: timezoneSchema,
+  peaks: peakSelectionSchema, // cimas + desnivel y km (event_peaks)
 });
 
 // Fecha y hora → instantes en la zona del evento (o error en su campo).
@@ -55,10 +57,12 @@ export const rsvpSchema = z.object({
 
 export const eventIdSchema = z.object({ id: z.uuid() });
 
-// Quién asistió de verdad (complete_event exige al menos uno).
+// Quién asistió de verdad (complete_event exige al menos uno) y, si hay cimas,
+// el desnivel y los km de la ascensión (suman en las estadísticas).
 export const completeEventSchema = z.object({
   id: z.uuid(),
   attendees: uuidList.refine((ids) => ids.length > 0, "attendeesRequired"),
+  ascents: z.array(ascentSchema).max(MAX_PEAKS).default([]),
 });
 
 // covers/events/{event_id}/{uuid}.webp
