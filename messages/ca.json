@@ -31,7 +31,8 @@
     "edit": "Editar",
     "today": "Avui",
     "optional": "opcional",
-    "more": "+{count}"
+    "more": "+{count}",
+    "deletedUser": "Usuari eliminat"
   },
   "categories": {
     "label": "Categoria",
@@ -295,7 +296,16 @@
     "logoutHint": "Tancaràs la sessió en aquest dispositiu.",
     "saved": "Canvis desats",
     "avatarError": "No s'ha pogut pujar la foto.",
-    "avatarHint": "JPG, PNG o WebP."
+    "avatarHint": "JPG, PNG o WebP.",
+    "deleteAccount": "Elimina el compte",
+    "deleteAccountHint": "Esborra les teves dades personals. El que vas compartir amb els teus amics es queda al seu historial.",
+    "deleteTitle": "Vols eliminar el teu compte?",
+    "deleteHint": "No es pot desfer i no podràs tornar a entrar amb aquest compte.",
+    "deleteKeeps": "Els teus esdeveniments fets, propostes i fotos es queden a l'historial dels teus amics, com a «Usuari eliminat».",
+    "deleteCancels": "Els teus esdeveniments futurs es cancel·len (avisem els participants) i les teves propostes obertes s'arxiven.",
+    "deleteRemoves": "S'esborren el teu correu, la teva foto, la bio, les amistats i les notificacions.",
+    "deleteConfirm": "Escriu <b>{username}</b> per confirmar:",
+    "deleteSubmit": "Elimina el meu compte"
   },
   "languages": {
     "es": "Español",
@@ -307,7 +317,8 @@
     "subtitle": "Proposa idees, organitza sortides i guarda el que has viscut amb els teus amics. Només entre vosaltres.",
     "google": "Continuar amb Google",
     "private": "Xarxa privada: només et veuen els teus amics.",
-    "error": "No hem pogut iniciar la sessió. Torna-ho a provar."
+    "error": "No hem pogut iniciar la sessió. Torna-ho a provar.",
+    "deleted": "El teu compte s'ha eliminat. Gràcies pels plans compartits."
   },
   "onboarding": {
     "title": "Tria el teu nom d'usuari",

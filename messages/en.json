@@ -31,7 +31,8 @@
     "edit": "Edit",
     "today": "Today",
     "optional": "optional",
-    "more": "+{count}"
+    "more": "+{count}",
+    "deletedUser": "Deleted user"
   },
   "categories": {
     "label": "Category",
@@ -295,7 +296,16 @@
     "logoutHint": "You'll be signed out on this device.",
     "saved": "Changes saved",
     "avatarError": "The photo couldn't be uploaded.",
-    "avatarHint": "JPG, PNG or WebP."
+    "avatarHint": "JPG, PNG or WebP.",
+    "deleteAccount": "Delete account",
+    "deleteAccountHint": "Removes your personal data. What you shared with your friends stays in their history.",
+    "deleteTitle": "Delete your account?",
+    "deleteHint": "This can't be undone and you won't be able to sign in with this account again.",
+    "deleteKeeps": "Your completed events, plans and photos stay in your friends' history, as “Deleted user”.",
+    "deleteCancels": "Your upcoming events are cancelled (participants are notified) and your open plans are archived.",
+    "deleteRemoves": "Your email, photo, bio, friendships and notifications are removed.",
+    "deleteConfirm": "Type <b>{username}</b> to confirm:",
+    "deleteSubmit": "Delete my account"
   },
   "languages": {
     "es": "Español",
@@ -307,7 +317,8 @@
     "subtitle": "Suggest ideas, organise outings and keep what you've lived with your friends. Just between you.",
     "google": "Continue with Google",
     "private": "Private network: only your friends can see you.",
-    "error": "We couldn't sign you in. Please try again."
+    "error": "We couldn't sign you in. Please try again.",
+    "deleted": "Your account has been deleted. Thanks for all the shared plans."
   },
   "onboarding": {
     "title": "Choose your username",

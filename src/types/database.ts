@@ -317,14 +317,14 @@ isOneToOne: false
                   ]
                 },"profiles": {
                   Row: {
-                    "avatar_url": string | null,"bio": string | null,"created_at": string,"display_name": string,"id": string,"locale": Database["public"]['Enums']["app_locale"],"onboarded_at": string | null,"timezone": string,"updated_at": string,"username": string | null
+                    "avatar_url": string | null,"bio": string | null,"created_at": string,"deleted_at": string | null,"display_name": string,"id": string,"locale": Database["public"]['Enums']["app_locale"],"onboarded_at": string | null,"timezone": string,"updated_at": string,"username": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "avatar_url"?: string | null,"bio"?: string | null,"created_at"?: string,"display_name": string,"id": string,"locale"?: Database["public"]['Enums']["app_locale"],"onboarded_at"?: string | null,"timezone"?: string,"updated_at"?: string,"username"?: string | null
+                    "avatar_url"?: string | null,"bio"?: string | null,"created_at"?: string,"deleted_at"?: string | null,"display_name": string,"id": string,"locale"?: Database["public"]['Enums']["app_locale"],"onboarded_at"?: string | null,"timezone"?: string,"updated_at"?: string,"username"?: string | null
                   }
                   Update: {
-                    "avatar_url"?: string | null,"bio"?: string | null,"created_at"?: string,"display_name"?: string,"id"?: string,"locale"?: Database["public"]['Enums']["app_locale"],"onboarded_at"?: string | null,"timezone"?: string,"updated_at"?: string,"username"?: string | null
+                    "avatar_url"?: string | null,"bio"?: string | null,"created_at"?: string,"deleted_at"?: string | null,"display_name"?: string,"id"?: string,"locale"?: Database["public"]['Enums']["app_locale"],"onboarded_at"?: string | null,"timezone"?: string,"updated_at"?: string,"username"?: string | null
                   }
                   Relationships: [
                     
@@ -375,6 +375,9 @@ isOneToOne: false
                            },
 "delete_event":
 { Args: { "p_event": string }; Returns: undefined
+                           },
+"delete_my_account":
+{ Args: Record<PropertyKey, never>; Returns: undefined
                            },
 "delete_plan":
 { Args: { "p_plan": string }; Returns: undefined

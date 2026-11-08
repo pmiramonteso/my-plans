@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { signOut } from "@/features/auth/actions";
 import { AvatarUpload } from "@/features/profiles/components/avatar-upload";
+import { DeleteAccount } from "@/features/profiles/components/delete-account";
 import { PreferencesForm } from "@/features/profiles/components/preferences-form";
 import { ProfileForm } from "@/features/profiles/components/profile-form";
 import { getCurrentProfile } from "@/features/profiles/queries";
@@ -39,10 +40,21 @@ export default async function SettingsPage() {
               {tNav("logout")}
             </Button>
           </form>
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t pt-6">
+            <p className="text-muted-foreground max-w-sm text-sm">{t("deleteAccountHint")}</p>
+            <Suspense fallback={<Skeleton className="h-10 w-40" />}>
+              <DeleteAccountSection />
+            </Suspense>
+          </div>
         </Panel>
       </div>
     </div>
   );
+}
+
+async function DeleteAccountSection() {
+  const profile = await getCurrentProfile();
+  return <DeleteAccount username={profile.username} />;
 }
 
 async function ProfileSection() {

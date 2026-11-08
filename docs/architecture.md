@@ -375,7 +375,16 @@ No cambia ninguna tabla ni ninguna consulta de la app.
 
 ### 6.8 Pendiente de decidir
 
-* **Borrado de cuenta:** hoy, borrar un usuario de `auth.users` borra en cascada sus propuestas y eventos. Antes de lanzarlo (Fase 7) conviene **anonimizar** en lugar de borrar, para no romper el historial de los amigos.
+* ~~**Borrado de cuenta**~~: decidido en la Fase 7 (§6.14): se anonimiza y se conserva lo compartido.
+
+### 6.14 Notas de implementación (Fase 7)
+
+* **Notificaciones:** `getNotifications` pagina por keyset `(created_at, id)` con el cursor en la URL (`?before=`, validado con una expresión regular antes de llegar al filtro `or` de PostgREST). Cada tipo enlaza a su pantalla (`notificationHref`). Al abrir una se marca como leída; "Marcar todo como leído" usa `mark_all_notifications_read`.
+* **Contador en tiempo real:** `UnreadBadge` (cliente) se suscribe a `postgres_changes` de `notifications` filtrando por `recipient_id`. Realtime aplica la RLS, así que solo llegan las propias. Con cada cambio se vuelve a contar; en `/notifications`, una nueva refresca la lista. Cada contador usa un canal con nombre único (hay dos en pantalla: cabecera y barra lateral).
+* **Feed:** el inicio muestra `get_friend_feed` (eventos realizados, propuestas nuevas y fotos de amigos; `security invoker`, respeta la RLS).
+* **Zona horaria:** el saludo usa la del perfil (en Vercel el servidor está en UTC). El formateador global sigue en `Europe/Madrid` porque también sirve al shell estático.
+* **Revisión de seguridad:** RLS, grants por columna, funciones `SECURITY DEFINER` (todas con `search_path = ''`), privilegios de `anon`, `safeNextPath` y Server Actions: sin problemas. Añadido: CSP y cabeceras (`src/lib/security-headers.ts`). `img-src` limitado a la app, Supabase y los avatares de Google, para que un `avatar_url` externo no sirva de píxel espía; `frame-ancestors 'none'`, `nosniff`, `Referrer-Policy`, `Permissions-Policy` y HSTS en producción. Los scripts usan `'unsafe-inline'` porque los nonces obligarían a renderizar todo en cada petición.
+* **Eliminar la cuenta** (`delete_my_account`, migración `20261109000100`): no se borra la fila de `auth.users`, porque la cascada se llevaría el historial de los amigos. El perfil queda anónimo (`deleted_at`, sin username, foto ni bio; la app lo muestra como "Usuario eliminado"). Se borran email, identidades, sesiones y refresh tokens, y la cuenta queda bloqueada (`banned_until = infinity`). Se cancelan sus eventos futuros, se archivan sus propuestas abiertas, se borran las privadas, sus amistades y sus notificaciones. Se conservan sus eventos realizados, propuestas y fotos. `require_user()` rechaza una cuenta eliminada aunque su JWT siga vigente, y un trigger impide pedirle amistad. El avatar lo borra la acción (Storage) antes de la RPC. Para confirmar hay que escribir el propio username.
 
 ---
 

@@ -31,7 +31,8 @@
     "edit": "Editar",
     "today": "Hoy",
     "optional": "opcional",
-    "more": "+{count}"
+    "more": "+{count}",
+    "deletedUser": "Usuario eliminado"
   },
   "categories": {
     "label": "Categoría",
@@ -295,7 +296,16 @@
     "logoutHint": "Cerrarás la sesión en este dispositivo.",
     "saved": "Cambios guardados",
     "avatarError": "No se ha podido subir la foto.",
-    "avatarHint": "JPG, PNG o WebP."
+    "avatarHint": "JPG, PNG o WebP.",
+    "deleteAccount": "Eliminar cuenta",
+    "deleteAccountHint": "Borra tus datos personales. Lo que compartiste con tus amigos se queda en su historial.",
+    "deleteTitle": "¿Eliminar tu cuenta?",
+    "deleteHint": "No se puede deshacer y no podrás volver a entrar con esta cuenta.",
+    "deleteKeeps": "Tus eventos realizados, propuestas y fotos siguen en el historial de tus amigos, como «Usuario eliminado».",
+    "deleteCancels": "Tus eventos futuros se cancelan (avisamos a los participantes) y tus propuestas abiertas se archivan.",
+    "deleteRemoves": "Se borran tu email, tu foto, tu bio, tus amistades y tus notificaciones.",
+    "deleteConfirm": "Escribe <b>{username}</b> para confirmar:",
+    "deleteSubmit": "Eliminar mi cuenta"
   },
   "languages": {
     "es": "Español",
@@ -307,7 +317,8 @@
     "subtitle": "Propón ideas, organiza salidas y guarda lo vivido con tus amigos. Solo entre vosotros.",
     "google": "Continuar con Google",
     "private": "Red privada: solo te ven tus amigos.",
-    "error": "No hemos podido iniciar sesión. Inténtalo de nuevo."
+    "error": "No hemos podido iniciar sesión. Inténtalo de nuevo.",
+    "deleted": "Tu cuenta se ha eliminado. Gracias por los planes compartidos."
   },
   "onboarding": {
     "title": "Elige tu nombre de usuario",
