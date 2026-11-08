@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
+import { TZDate } from "@date-fns/tz";
 import { CalendarPlus, PartyPopper } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
@@ -11,6 +12,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EventCard, EventRow } from "@/features/events/components/event-card";
 import { RsvpButtons } from "@/features/events/components/rsvp-buttons";
 import { getPendingRsvps, getUpcomingEvents } from "@/features/events/queries";
+import { FriendFeed } from "@/features/feed/components/friend-feed";
+import { getFriendFeed } from "@/features/feed/queries";
 import { PlanCard } from "@/features/plans/components/plan-card";
 import { getPlanInvitesPending, getPlans } from "@/features/plans/queries";
 import { getCurrentProfile } from "@/features/profiles/queries";
@@ -43,6 +46,13 @@ export default async function HomePage() {
       </section>
 
       <section>
+        <SectionHeader title={t("feed")} />
+        <Suspense fallback={<ListSkeleton count={3} />}>
+          <FeedSection />
+        </Suspense>
+      </section>
+
+      <section>
         <SectionHeader title={t("ideas")} href="/plans" linkLabel={tCommon("seeAll")} />
         <Suspense fallback={<CardGridSkeleton />}>
           <IdeasSection />
@@ -58,8 +68,8 @@ async function Greeting() {
     getCurrentProfile(),
     requestNow(),
   ]);
-  // TODO(Fase 3): hora en la zona horaria del perfil.
-  const hour = now.getHours();
+  // La hora en la zona del perfil, no la del servidor (en Vercel, UTC).
+  const hour = new TZDate(now, profile.timezone).getHours();
   const key = hour < 13 ? "morning" : hour < 20 ? "afternoon" : "evening";
   return (
     <h1 className="text-3xl font-semibold md:text-4xl">
@@ -149,6 +159,11 @@ async function UpcomingSection() {
       ))}
     </div>
   );
+}
+
+async function FeedSection() {
+  const [items, now] = await Promise.all([getFriendFeed(), requestNow()]);
+  return <FriendFeed items={items} now={now} />;
 }
 
 async function IdeasSection() {

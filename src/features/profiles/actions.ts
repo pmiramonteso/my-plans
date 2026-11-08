@@ -3,6 +3,7 @@
 import { refresh } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { z } from "zod";
 
 import { LOCALE_COOKIE } from "@/i18n/config";
 import { AppError, createAction, unwrap } from "@/lib/action";
@@ -77,3 +78,24 @@ export const setAvatar = createAction(avatarSchema, async ({ path }) => {
   }
   refresh();
 });
+
+// Eliminar la cuenta: se borra el avatar y la RPC anonimiza el perfil, borra
+// los datos personales de auth y bloquea el acceso. Lo compartido (eventos
+// realizados, propuestas y fotos) se conserva en el historial de los amigos.
+// Para confirmar hay que escribir el propio username.
+export const deleteAccount = createAction(
+  z.object({ confirm: z.string().trim().toLowerCase() }),
+  async ({ confirm }) => {
+    const [supabase, profile] = await Promise.all([createClient(), getSessionProfile()]);
+    if (!profile.username || confirm !== profile.username) throw new AppError("invalid_input");
+
+    const storage = supabase.storage.from(AVATAR_BUCKET);
+    const { data: files } = await storage.list(profile.id);
+    if (files?.length) await storage.remove(files.map((f) => `${profile.id}/${f.name}`));
+
+    unwrap(await supabase.rpc("delete_my_account"));
+    // Las sesiones ya no existen en la BD: solo queda borrar las cookies.
+    await supabase.auth.signOut({ scope: "local" });
+    redirect("/login?deleted=1");
+  },
+);

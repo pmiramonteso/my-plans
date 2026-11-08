@@ -40,3 +40,27 @@ jobs:
           path: database.generated.ts
       - name: Los tipos versionados están al día (si falla, `npm run db:types` o usa el artefacto)
         run: diff -u src/types/database.ts database.generated.ts
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 3.0.0
+      - run: npm ci
+      # Solo los servicios que usa la app (BD, Auth, API, Storage y Realtime).
+      - run: supabase start -x studio,imgproxy,edge-runtime,logflare,vector,supavisor,mailpit
+      - run: npx playwright install --with-deps chromium
+      # playwright.config.ts lee las claves con `supabase status`, compila la app y la arranca.
+      - run: npx playwright test
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 7

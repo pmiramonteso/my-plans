@@ -52,3 +52,17 @@ Para iniciar sesión de verdad (Google) sigue `docs/setup-supabase-google.md`.
 * Sin Docker: el CI genera los tipos en el artefacto `database-types` del job `database`
   (`gh run download <id> -n database-types`) y comprueba que `src/types/database.ts` está al día.
 * Toda tabla, vista o función nueva concede sus privilegios explícitamente (ver `docs/architecture.md` §6.7) y lleva sus pruebas en `supabase/tests/database/`.
+
+## Pruebas E2E (Playwright)
+
+Simulan a varias personas usando la app en Chromium: login, propuesta, interés, organizar, confirmar, cerrar el evento e historial compartido.
+
+```bash
+npm run db:start                  # Supabase local
+npx playwright install chromium   # la primera vez
+npm run test:e2e
+```
+
+* Se ejecutan contra la **versión de producción** (`next build` + `next start` en el puerto 3100), así que no chocan con `npm run dev`. Si ya hay algo escuchando en el 3100, lo reutilizan.
+* Las claves salen de `supabase status`. Cada prueba crea sus usuarios con **email y contraseña** (con la *secret key* local) y los borra al terminar. La app no tiene login por contraseña: las pruebas escriben directamente las cookies de sesión de `@supabase/ssr`. En producción el único acceso es Google.
+* En el CI hay un *job* `e2e`. Si falla, el informe se sube como artefacto `playwright-report`.

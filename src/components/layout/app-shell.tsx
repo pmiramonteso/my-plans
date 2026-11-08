@@ -5,9 +5,10 @@ import { getTranslations } from "next-intl/server";
 
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { UnreadBadge } from "@/features/notifications/components/unread-badge";
 import { getUnreadCount } from "@/features/notifications/queries";
 import { getCurrentProfile } from "@/features/profiles/queries";
-import { cn } from "@/lib/utils";
+import { DESIGN_PREVIEW } from "@/lib/preview";
 
 import { Logo } from "./logo";
 import { BottomNav, SidebarNav } from "./nav-links";
@@ -30,7 +31,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
         </Button>
         <nav aria-label={t("main")} className="flex-1 space-y-1">
           <SidebarNav />
-          <Suspense fallback={<NotificationsLink count={0} label={t("notifications")} />}>
+          <Suspense fallback={<NotificationsLink label={t("notifications")} />}>
             <SidebarNotifications label={t("notifications")} />
           </Suspense>
         </nav>
@@ -43,7 +44,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
         <header className="bg-background/85 sticky top-0 z-30 flex h-14 items-center justify-between border-b px-4 backdrop-blur-lg md:hidden">
           <Logo className="text-lg [&_svg]:size-7" />
           <div className="flex items-center gap-1">
-            <Suspense fallback={<BellButton count={0} label={t("notifications")} />}>
+            <Suspense fallback={<BellButton label={t("notifications")} />}>
               <HeaderBell label={t("notifications")} />
             </Suspense>
             <Suspense fallback={<Skeleton className="size-8 rounded-full" />}>
@@ -67,27 +68,35 @@ async function CurrentUserMenu({ variant }: { variant: "sidebar" | "compact" }) 
   return <UserMenu profile={profile} variant={variant} />;
 }
 
+// Contador de no leídas: el valor inicial viene del servidor y luego se
+// mantiene al día con Realtime (UnreadBadge).
+async function LiveBadge({ className }: { className?: string }) {
+  const [profile, count] = await Promise.all([getCurrentProfile(), getUnreadCount()]);
+  return (
+    <UnreadBadge userId={profile.id} initial={count} live={!DESIGN_PREVIEW} className={className} />
+  );
+}
+
 async function HeaderBell({ label }: { label: string }) {
-  return <BellButton count={await getUnreadCount()} label={label} />;
+  return <BellButton label={label} badge={<LiveBadge className="absolute top-1 right-1" />} />;
 }
 
 async function SidebarNotifications({ label }: { label: string }) {
-  return <NotificationsLink count={await getUnreadCount()} label={label} />;
+  return <NotificationsLink label={label} badge={<LiveBadge className="ml-auto" />} />;
 }
 
-function BellButton({ count, label }: { count: number; label: string }) {
+function BellButton({ label, badge }: { label: string; badge?: React.ReactNode }) {
   return (
     <Button asChild variant="ghost" size="icon" className="relative rounded-full">
       <Link href="/notifications" aria-label={label}>
         <Bell className="size-5" />
-        {count > 0 && <CountDot count={count} className="absolute top-1 right-1" />}
+        {badge}
       </Link>
     </Button>
   );
 }
 
-// TODO(Fase 7): el contador se actualiza en tiempo real (Supabase Realtime).
-function NotificationsLink({ count, label }: { count: number; label: string }) {
+function NotificationsLink({ label, badge }: { label: string; badge?: React.ReactNode }) {
   return (
     <Link
       href="/notifications"
@@ -95,20 +104,7 @@ function NotificationsLink({ count, label }: { count: number; label: string }) {
     >
       <Bell aria-hidden className="size-5" />
       {label}
-      {count > 0 && <CountDot count={count} className="ml-auto" />}
+      {badge}
     </Link>
-  );
-}
-
-function CountDot({ count, className }: { count: number; className?: string }) {
-  return (
-    <span
-      className={cn(
-        "bg-accent text-accent-foreground flex h-4.5 min-w-4.5 items-center justify-center rounded-full px-1 text-[0.65rem] font-bold tabular-nums",
-        className,
-      )}
-    >
-      {count > 9 ? "9+" : count}
-    </span>
   );
 }

@@ -2,6 +2,7 @@ import "server-only";
 
 import { cache } from "react";
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 
 import { DEFAULT_LOCALE, isLocale } from "@/i18n/config";
 import { DESIGN_PREVIEW } from "@/lib/preview";
@@ -81,9 +82,26 @@ export async function getProfileByUsername(username: string): Promise<Profile | 
   return { ...toProfile(data), username: data.username };
 }
 
+// Perfiles de participantes, organizadores, autores de fotos… Una cuenta
+// eliminada se conserva anónima (delete_my_account): se muestra como
+// "Usuario eliminado", sin username ni foto.
 export async function getProfilesByIds(ids: string[]): Promise<Map<string, ProfileSummary>> {
   if (ids.length === 0) return new Map();
   const supabase = await createClient();
-  const { data } = await supabase.from("profiles").select(PROFILE_SUMMARY_COLUMNS).in("id", ids);
-  return new Map((data ?? []).map((row) => [row.id, toProfileSummary(row)]));
+  const { data } = await supabase
+    .from("profiles")
+    .select(`${PROFILE_SUMMARY_COLUMNS}, deleted_at`)
+    .in("id", ids);
+  const rows = data ?? [];
+  const deletedName = rows.some((r) => r.deleted_at)
+    ? (await getTranslations("common"))("deletedUser")
+    : "";
+  return new Map(
+    rows.map((row) => [
+      row.id,
+      row.deleted_at
+        ? { id: row.id, username: "", displayName: deletedName, avatarUrl: null }
+        : toProfileSummary(row),
+    ]),
+  );
 }
