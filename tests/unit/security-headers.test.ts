@@ -47,3 +47,14 @@ describe("cabeceras de seguridad", () => {
     expect(keys(true)).not.toContain("Strict-Transport-Security");
   });
 });
+
+describe("upgrade-insecure-requests", () => {
+  it("solo en producción con Supabase en HTTPS", () => {
+    expect(contentSecurityPolicy({ supabaseUrl: "https://abc.supabase.co", dev: false })).toContain(
+      "upgrade-insecure-requests",
+    );
+    expect(
+      contentSecurityPolicy({ supabaseUrl: "http://127.0.0.1:54321", dev: false }),
+    ).not.toContain("upgrade-insecure-requests");
+  });
+});

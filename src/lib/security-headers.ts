@@ -31,7 +31,9 @@ export function contentSecurityPolicy({ supabaseUrl, dev }: Options) {
   const policy = Object.entries(directives)
     .map(([name, values]) => `${name} ${values.join(" ")}`)
     .join("; ");
-  return dev ? policy : `${policy}; upgrade-insecure-requests`;
+  // Solo con Supabase en HTTPS (producción). Con la BD local por HTTP, la
+  // versión de producción en local (pruebas E2E) no debe forzar HTTPS.
+  return !dev && supabase.startsWith("https:") ? `${policy}; upgrade-insecure-requests` : policy;
 }
 
 export function securityHeaders(options: Options) {
