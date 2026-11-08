@@ -110,7 +110,14 @@
     "complete": "Marcar como realizado",
     "completeTitle": "¿Quién vino?",
     "completeSubtitle": "Solo cuentan para el historial y las estadísticas quienes asistieron de verdad.",
-    "completeSubmit": "Confirmar asistencia"
+    "completeSubmit": "Confirmar asistencia",
+    "delete": "Eliminar",
+    "deleteTitle": "¿Eliminar el evento?",
+    "deleteHint": "Desaparecerá para todos los participantes. Esta acción no se puede deshacer.",
+    "cancelShort": "Cancelar",
+    "cancelTitle": "¿Cancelar el evento?",
+    "cancelHint": "Avisaremos a los participantes. Si venía de una propuesta, esta vuelve a quedar abierta.",
+    "cancelledHint": "Este evento se ha cancelado."
   },
   "plans": {
     "title": "Propuestas",
@@ -139,7 +146,12 @@
     "invitations": "Invitados",
     "events": "Eventos",
     "empty": "No hay propuestas abiertas",
-    "emptyHint": "Lanza una idea y mira quién se apunta."
+    "emptyHint": "Lanza una idea y mira quién se apunta.",
+    "edit": "Editar propuesta",
+    "editShort": "Editar",
+    "delete": "Eliminar",
+    "deleteTitle": "¿Eliminar la propuesta?",
+    "deleteHint": "Dejará de verse para todos. Los eventos que ya organizaste a partir de ella se mantienen."
   },
   "create": {
     "title": "¿Qué quieres crear?",
@@ -170,8 +182,12 @@
       "extraInfo": "Información práctica",
       "extraInfoPlaceholder": "Punto de encuentro, material, coche compartido…",
       "invite": "Invitar amigos",
-      "inviteHint": "Solo puedes invitar a tus amigos."
-    }
+      "inviteHint": "Solo puedes invitar a tus amigos.",
+      "endDate": "Último día",
+      "inviteMore": "Invitar a más amigos",
+      "removeCover": "Quitar la foto"
+    },
+    "coverError": "Se ha guardado, pero la portada no se ha podido subir."
   },
   "friends": {
     "title": "Amigos",
@@ -280,7 +296,9 @@
     "required": "Este campo es obligatorio.",
     "tooLong": "Es demasiado largo.",
     "username": "De 3 a 20 caracteres: letras minúsculas, números y _.",
-    "invalid": "El valor no es válido."
+    "invalid": "El valor no es válido.",
+    "url": "Escribe un enlace que empiece por http:// o https://.",
+    "endBeforeStart": "El final no puede ser anterior al inicio."
   },
   "errors": {
     "not_authenticated": "Tu sesión ha caducado. Vuelve a iniciar sesión.",

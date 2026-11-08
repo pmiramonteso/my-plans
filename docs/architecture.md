@@ -339,7 +339,17 @@ No cambia ninguna tabla ni ninguna consulta de la app.
 * **Errores en formularios:** los esquemas Zod usan claves (`validation.<clave>`) como mensaje. `reportActionError()` (`lib/form.ts`) pinta los errores de campo o un toast con `errors.<código>`. Un `conflict` en `username` se muestra como "ya está cogido".
 * **Avatares:** se comprimen en el navegador (`lib/images.ts`, 512 px WebP) y se suben con la sesión a `avatars/{id}/{uuid}.webp`. `setAvatar` guarda la URL pública y borra la foto anterior.
 * **Tipos de la BD:** el job `database` de CI genera `database.generated.ts` (artefacto `database-types`) y falla si `src/types/database.ts` no coincide. La CLI está fijada a la misma versión que la devDependency.
-* **Datos reales vs. de ejemplo:** perfil, amigos, solicitudes, búsqueda, estadísticas y el contador de notificaciones ya leen de Supabase. Propuestas, eventos, agenda, historial y la lista de notificaciones siguen con `src/mocks` hasta sus fases. Con `DESIGN_PREVIEW=1` todo usa datos de ejemplo.
+* **Datos reales vs. de ejemplo:** perfil, amigos, solicitudes, búsqueda, estadísticas y el contador de notificaciones ya leen de Supabase. Historial y la lista de notificaciones siguen con `src/mocks` hasta sus fases (desde la Fase 4, propuestas, eventos y agenda ya son reales). Con `DESIGN_PREVIEW=1` todo usa datos de ejemplo.
+
+### 6.11 Notas de implementación (Fase 4)
+
+* **Crear propuesta:** RPC `create_plan` (migración `20261108000100`). Inserta la propuesta y sus invitaciones en una transacción, `SECURITY INVOKER` para que la RLS siga siendo la guarda. Una propuesta privada no admite invitados: el esquema Zod los descarta y la RPC lo impide.
+* **Crear evento / organizar propuesta:** un solo action `createEvent` sobre `create_event` (con `planId` si viene de una propuesta). Fecha y hora se introducen "de pared" y se convierten a instantes en la zona del evento (`features/events/dates.ts`). Una hora de fin anterior a la de inicio se entiende como del día siguiente. Los eventos de todo el día pueden durar varios días (último día a las 23:59).
+* **Editar:** update directo con la RLS (columnas permitidas por `grant update`). Al editar solo se puede **invitar a más** amigos (`upsert … ignoreDuplicates`), no quitar invitados.
+* **Respuestas:** interés con `set_plan_interest`. El RSVP es un update de mi fila o, si el evento es de visibilidad `friends` y no estaba invitado, un insert propio. Se pintan de forma optimista (`useOptimistic`).
+* **Portadas:** la política de `covers` exige que la propuesta o el evento existan, así que el flujo es guardar → comprimir (1600 px WebP) → subir a `covers/{plans|events}/{id}/{uuid}.webp` → `setPlanCover`/`setEventCover`, que borra la anterior. Al leer se firman en lote (`lib/storage.ts`, 1 h).
+* **Formularios:** React Hook Form con el esquema Zod de cliente (`eventFormSchema` valida sin transformar). El action recibe los valores crudos y vuelve a validar con el esquema de servidor (que sí transforma).
+* **Pendiente para la Fase 5:** marcar como realizado (`complete_event`), historial y agenda con filtros. La página `/events/[id]/complete` sigue siendo de muestra.
 
 ### 6.8 Pendiente de decidir
 

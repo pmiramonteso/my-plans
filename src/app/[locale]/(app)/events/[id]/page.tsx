@@ -11,19 +11,18 @@ import {
   Lightbulb,
   MapPin,
   MountainSnow,
-  Pencil,
 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { CategoryBadge } from "@/components/shared/category";
 import { Cover } from "@/components/shared/cover";
-import { DemoNotice } from "@/components/shared/demo-notice";
 import { DetailHero, Fact, Panel, Prose } from "@/components/shared/detail";
 import { EmptyState } from "@/components/shared/empty-state";
 import { DetailSkeleton } from "@/components/shared/skeletons";
 import { UserAvatar } from "@/components/shared/user-avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { EventManage } from "@/features/events/components/event-manage";
 import { EventWhen } from "@/features/events/components/event-when";
 import { RsvpButtons } from "@/features/events/components/rsvp-buttons";
 import { getEvent } from "@/features/events/queries";
@@ -37,7 +36,6 @@ export const generateMetadata = pageTitle("nav.agenda");
 export default function EventPage({ params }: PageProps<"/[locale]/events/[id]">) {
   return (
     <>
-      <DemoNotice />
       <Suspense fallback={<DetailSkeleton />}>
         <EventContent params={params} />
       </Suspense>
@@ -207,31 +205,19 @@ async function EventAction({ event, isHost }: { event: EventDetail; isHost: bool
   }
 
   if (isHost) {
-    const started = new Date(event.startsAt) <= now;
     return (
-      <div className="flex flex-col gap-2">
-        {started && (
-          <Button asChild size="lg">
-            <Link href={`/events/${event.id}/complete`}>
-              <CircleCheck data-icon="inline-start" />
-              {t("complete")}
-            </Link>
-          </Button>
-        )}
-        <Button asChild variant={started ? "outline" : "default"} size={started ? "default" : "lg"}>
-          <Link href={`/events/${event.id}/edit`}>
-            <Pencil data-icon="inline-start" />
-            {t("edit")}
-          </Link>
-        </Button>
-      </div>
+      <EventManage id={event.id} status={event.status} started={new Date(event.startsAt) <= now} />
     );
+  }
+
+  if (event.status === "cancelled") {
+    return <p className="text-muted-foreground text-sm">{t("cancelledHint")}</p>;
   }
 
   return (
     <div className="space-y-3">
       <p className="font-heading text-lg font-semibold">{t("rsvpQuestion")}</p>
-      <RsvpButtons rsvp={event.myRsvp ?? "pending"} />
+      <RsvpButtons eventId={event.id} rsvp={event.myRsvp ?? "pending"} />
     </div>
   );
 }

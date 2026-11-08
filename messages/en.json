@@ -110,7 +110,14 @@
     "complete": "Mark as done",
     "completeTitle": "Who came?",
     "completeSubtitle": "Only people who actually attended count towards history and stats.",
-    "completeSubmit": "Confirm attendance"
+    "completeSubmit": "Confirm attendance",
+    "delete": "Delete",
+    "deleteTitle": "Delete this event?",
+    "deleteHint": "It will disappear for all participants. This cannot be undone.",
+    "cancelShort": "Cancel",
+    "cancelTitle": "Cancel this event?",
+    "cancelHint": "We'll let participants know. If it came from a proposal, the proposal will be open again.",
+    "cancelledHint": "This event has been cancelled."
   },
   "plans": {
     "title": "Proposals",
@@ -139,7 +146,12 @@
     "invitations": "Invited",
     "events": "Events",
     "empty": "No open proposals",
-    "emptyHint": "Share an idea and see who's in."
+    "emptyHint": "Share an idea and see who's in.",
+    "edit": "Edit proposal",
+    "editShort": "Edit",
+    "delete": "Delete",
+    "deleteTitle": "Delete this proposal?",
+    "deleteHint": "It will disappear for everyone. Events you've already organised from it are kept."
   },
   "create": {
     "title": "What do you want to create?",
@@ -170,8 +182,12 @@
       "extraInfo": "Practical info",
       "extraInfoPlaceholder": "Meeting point, gear, car sharing…",
       "invite": "Invite friends",
-      "inviteHint": "You can only invite your friends."
-    }
+      "inviteHint": "You can only invite your friends.",
+      "endDate": "Last day",
+      "inviteMore": "Invite more friends",
+      "removeCover": "Remove photo"
+    },
+    "coverError": "Saved, but the cover couldn't be uploaded."
   },
   "friends": {
     "title": "Friends",
@@ -280,7 +296,9 @@
     "required": "This field is required.",
     "tooLong": "It is too long.",
     "username": "3 to 20 characters: lowercase letters, numbers and _.",
-    "invalid": "The value is not valid."
+    "invalid": "The value is not valid.",
+    "url": "Enter a link starting with http:// or https://.",
+    "endBeforeStart": "The end can't be before the start."
   },
   "errors": {
     "not_authenticated": "Your session has expired. Please sign in again.",

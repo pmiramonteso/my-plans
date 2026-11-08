@@ -1,18 +1,16 @@
 import { Suspense } from "react";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CalendarCheck, ExternalLink, Gauge, MapPin, MountainSnow } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { CategoryBadge } from "@/components/shared/category";
 import { Cover } from "@/components/shared/cover";
-import { DemoNotice } from "@/components/shared/demo-notice";
 import { DetailHero, Fact, Panel, Prose } from "@/components/shared/detail";
 import { DetailSkeleton } from "@/components/shared/skeletons";
 import { UserAvatar } from "@/components/shared/user-avatar";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { InterestButtons } from "@/features/plans/components/interest-buttons";
+import { PlanManage } from "@/features/plans/components/plan-manage";
 import { getPlan } from "@/features/plans/queries";
 import type { PlanInterest } from "@/features/plans/types";
 import { pageTitle } from "@/lib/metadata";
@@ -23,7 +21,6 @@ export const generateMetadata = pageTitle("plans.title");
 export default function PlanPage({ params }: PageProps<"/[locale]/plans/[id]">) {
   return (
     <>
-      <DemoNotice />
       <Suspense fallback={<DetailSkeleton />}>
         <PlanDetail params={params} />
       </Suspense>
@@ -159,20 +156,11 @@ async function PlanAction({
   interest: PlanInterest | null;
 }) {
   const t = await getTranslations("plans");
-  if (mine) {
-    return (
-      <Button asChild size="lg" className="w-full">
-        <Link href={`/plans/${id}/schedule`}>
-          <CalendarCheck data-icon="inline-start" />
-          {t("schedule")}
-        </Link>
-      </Button>
-    );
-  }
+  if (mine) return <PlanManage id={id} />;
   return (
     <div className="space-y-3">
       <p className="font-heading text-lg font-semibold">{t("interestQuestion")}</p>
-      <InterestButtons interest={interest ?? "pending"} />
+      <InterestButtons planId={id} interest={interest ?? "pending"} />
     </div>
   );
 }

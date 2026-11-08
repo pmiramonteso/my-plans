@@ -60,7 +60,7 @@ export function PlanCard({ plan, className }: { plan: PlanSummary; className?: s
           </div>
           {!mine && (
             <div className="relative z-10">
-              <InterestButtons interest={plan.myInterest ?? "pending"} size="sm" />
+              <InterestButtons planId={plan.id} interest={plan.myInterest ?? "pending"} size="sm" />
             </div>
           )}
         </div>

@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Lightbulb, Plus } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
-import { DemoNotice } from "@/components/shared/demo-notice";
 import { EmptyState } from "@/components/shared/empty-state";
 import { FilterTabs } from "@/components/shared/filter-tabs";
 import { PageHeader } from "@/components/shared/page-header";
@@ -21,7 +20,6 @@ export default async function PlansPage({ searchParams }: PageProps<"/[locale]/p
   const [t, tCreate] = await Promise.all([getTranslations("plans"), getTranslations("create")]);
   return (
     <>
-      <DemoNotice />
       <PageHeader
         title={t("title")}
         description={t("subtitle")}

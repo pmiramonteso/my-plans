@@ -4,7 +4,6 @@ import { addMonths } from "date-fns";
 import { CalendarX2 } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
-import { DemoNotice } from "@/components/shared/demo-notice";
 import { EmptyState } from "@/components/shared/empty-state";
 import { PageHeader, SectionHeader } from "@/components/shared/page-header";
 import { ListSkeleton } from "@/components/shared/skeletons";
@@ -26,7 +25,6 @@ export default async function AgendaPage({ searchParams }: PageProps<"/[locale]/
   const t = await getTranslations("agenda");
   return (
     <>
-      <DemoNotice />
       <PageHeader title={t("title")} description={t("subtitle")} />
       <Suspense
         fallback={
@@ -88,7 +86,7 @@ async function Agenda({ searchParams }: Pick<PageProps<"/[locale]/agenda">, "sea
                 action={
                   e.myRsvp === "pending" && e.status === "scheduled" ? (
                     <div className="hidden sm:block">
-                      <RsvpButtons rsvp="pending" size="sm" />
+                      <RsvpButtons eventId={e.id} rsvp="pending" size="sm" />
                     </div>
                   ) : undefined
                 }
