@@ -31,9 +31,7 @@
     "edit": "Editar",
     "today": "Avui",
     "optional": "opcional",
-    "more": "+{count}",
-    "demoNotice": "Pantalla de mostra amb dades d'exemple.",
-    "demoAction": "Aquesta acció es connectarà en una fase posterior."
+    "more": "+{count}"
   },
   "categories": {
     "label": "Categoria",
@@ -64,7 +62,8 @@
     "ideas": "Propostes obertes",
     "noUpcoming": "No tens res a l'agenda",
     "noUpcomingHint": "Organitza alguna cosa amb els teus amics o apunta't a una proposta.",
-    "noPending": "Estàs al dia"
+    "noPending": "Estàs al dia",
+    "feed": "Els teus amics"
   },
   "agenda": {
     "title": "Agenda",
@@ -277,7 +276,11 @@
       "event_cancelled": "<b>{title}</b> s'ha cancel·lat",
       "event_completed": "<b>{title}</b> ja és al teu historial",
       "photos_added": "<b>{actor}</b> ha pujat {count, plural, one {# foto} other {# fotos}} a <b>{title}</b>"
-    }
+    },
+    "noMore": "No hi ha notificacions més antigues",
+    "someone": "Algú",
+    "newest": "Mostra les més recents",
+    "older": "Mostra'n de més antigues"
   },
   "settings": {
     "title": "Configuració",
@@ -369,5 +372,14 @@
     "elevationShort": "Desnivell",
     "distance": "Distància (km)",
     "distanceShort": "Km"
+  },
+  "feed": {
+    "empty": "Encara no hi ha activitat dels teus amics",
+    "emptyHint": "Quan els teus amics proposin plans o pugin fotos, ho veuràs aquí.",
+    "kind": {
+      "event_completed": "<b>{actor}</b> ha fet <b>{title}</b>",
+      "plan_created": "<b>{actor}</b> proposa <b>{title}</b>",
+      "photos_added": "<b>{actor}</b> ha pujat {count, plural, one {# foto} other {# fotos}} de <b>{title}</b>"
+    }
   }
 }

@@ -31,9 +31,7 @@
     "edit": "Edit",
     "today": "Today",
     "optional": "optional",
-    "more": "+{count}",
-    "demoNotice": "Preview screen with sample data.",
-    "demoAction": "This action will be wired up in a later phase."
+    "more": "+{count}"
   },
   "categories": {
     "label": "Category",
@@ -64,7 +62,8 @@
     "ideas": "Open proposals",
     "noUpcoming": "Nothing on your agenda",
     "noUpcomingHint": "Organise something with your friends or join a proposal.",
-    "noPending": "You're all caught up"
+    "noPending": "You're all caught up",
+    "feed": "Your friends"
   },
   "agenda": {
     "title": "Agenda",
@@ -277,7 +276,11 @@
       "event_cancelled": "<b>{title}</b> was cancelled",
       "event_completed": "<b>{title}</b> is now in your history",
       "photos_added": "<b>{actor}</b> added {count, plural, one {# photo} other {# photos}} to <b>{title}</b>"
-    }
+    },
+    "noMore": "No older notifications",
+    "someone": "Someone",
+    "newest": "See the latest",
+    "older": "See older"
   },
   "settings": {
     "title": "Settings",
@@ -369,5 +372,14 @@
     "elevationShort": "Gain",
     "distance": "Distance (km)",
     "distanceShort": "Km"
+  },
+  "feed": {
+    "empty": "No activity from your friends yet",
+    "emptyHint": "When your friends suggest plans or upload photos, you'll see it here.",
+    "kind": {
+      "event_completed": "<b>{actor}</b> did <b>{title}</b>",
+      "plan_created": "<b>{actor}</b> suggests <b>{title}</b>",
+      "photos_added": "<b>{actor}</b> uploaded {count, plural, one {# photo} other {# photos}} from <b>{title}</b>"
+    }
   }
 }

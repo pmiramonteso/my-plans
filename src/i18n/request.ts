@@ -15,7 +15,10 @@ export default getRequestConfig(async ({ locale: override }) => {
 
   return {
     locale,
-    // TODO(Fase 3): zona horaria del perfil. Cada evento guarda la suya propia.
+    // Zona por defecto del formateador. No puede ser la del perfil: este config
+    // también sirve al shell estático, que no lee la sesión. Las fechas de un
+    // evento se formatean con su propia zona (event.timezone) y la agenda y el
+    // saludo usan la del perfil de forma explícita.
     timeZone: "Europe/Madrid",
     messages: (await import(`../../messages/${locale}.json`)).default,
   };

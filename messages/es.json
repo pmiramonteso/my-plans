@@ -31,9 +31,7 @@
     "edit": "Editar",
     "today": "Hoy",
     "optional": "opcional",
-    "more": "+{count}",
-    "demoNotice": "Pantalla de muestra con datos de ejemplo.",
-    "demoAction": "Esta acción se conectará en una fase posterior."
+    "more": "+{count}"
   },
   "categories": {
     "label": "Categoría",
@@ -64,7 +62,8 @@
     "ideas": "Propuestas abiertas",
     "noUpcoming": "No tienes nada en la agenda",
     "noUpcomingHint": "Organiza algo con tus amigos o apúntate a una propuesta.",
-    "noPending": "Estás al día"
+    "noPending": "Estás al día",
+    "feed": "Tus amigos"
   },
   "agenda": {
     "title": "Agenda",
@@ -277,7 +276,11 @@
       "event_cancelled": "<b>{title}</b> se ha cancelado",
       "event_completed": "<b>{title}</b> ya está en tu historial",
       "photos_added": "<b>{actor}</b> ha subido {count, plural, one {# foto} other {# fotos}} a <b>{title}</b>"
-    }
+    },
+    "noMore": "No hay notificaciones más antiguas",
+    "someone": "Alguien",
+    "newest": "Ver las más recientes",
+    "older": "Ver más antiguas"
   },
   "settings": {
     "title": "Ajustes",
@@ -369,5 +372,14 @@
     "elevationShort": "Desnivel",
     "distance": "Distancia (km)",
     "distanceShort": "Km"
+  },
+  "feed": {
+    "empty": "Aún no hay actividad de tus amigos",
+    "emptyHint": "Cuando tus amigos propongan planes o suban fotos, lo verás aquí.",
+    "kind": {
+      "event_completed": "<b>{actor}</b> ha hecho <b>{title}</b>",
+      "plan_created": "<b>{actor}</b> propone <b>{title}</b>",
+      "photos_added": "<b>{actor}</b> ha subido {count, plural, one {# foto} other {# fotos}} de <b>{title}</b>"
+    }
   }
 }
