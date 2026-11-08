@@ -1,42 +1,53 @@
 "use client";
 
-import { useState } from "react";
+import { useOptimistic, useTransition } from "react";
 import { Check, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { toast } from "sonner";
 
+import type { ActionResult } from "@/lib/action";
+import { reportActionError } from "@/lib/form";
 import { cn } from "@/lib/utils";
 
-// Respuesta sí/no (RSVP de un evento o interés en una propuesta).
-// TODO(Fase 4): llamar al Server Action correspondiente.
+type Choice = "yes" | "no";
+
+// Respuesta sí/no (RSVP de un evento o interés en una propuesta). Se marca al
+// instante y el action refresca la página con el valor guardado.
 export function ChoiceButtons({
   value,
   yesLabel,
   noLabel,
+  onChoose,
   size = "default",
 }: {
-  value: "yes" | "no" | null;
+  value: Choice | null;
   yesLabel: string;
   noLabel: string;
+  onChoose: (choice: Choice) => Promise<ActionResult<unknown>>;
   size?: "default" | "sm";
 }) {
-  const t = useTranslations("common");
-  const [current, setCurrent] = useState(value);
+  const t = useTranslations();
+  const [current, setCurrent] = useOptimistic(value);
+  const [pending, startTransition] = useTransition();
 
-  const choose = (next: "yes" | "no") => {
-    setCurrent(next);
-    toast(t("demoAction"));
+  const choose = (next: Choice) => {
+    if (next === current) return;
+    startTransition(async () => {
+      setCurrent(next);
+      const result = await onChoose(next);
+      if (!result.ok) reportActionError(result, t);
+    });
   };
 
   const base =
-    "inline-flex items-center justify-center gap-1.5 rounded-full border font-medium transition focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none";
+    "inline-flex items-center justify-center gap-1.5 rounded-full border font-medium transition focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none disabled:opacity-70";
   const sizing = size === "sm" ? "h-8 px-3 text-xs" : "h-10 px-4 text-sm";
 
   return (
-    <div className="flex gap-2" role="group">
+    <div className="flex gap-2" role="group" aria-busy={pending}>
       <button
         type="button"
         aria-pressed={current === "yes"}
+        disabled={pending}
         onClick={() => choose("yes")}
         className={cn(
           base,
@@ -52,6 +63,7 @@ export function ChoiceButtons({
       <button
         type="button"
         aria-pressed={current === "no"}
+        disabled={pending}
         onClick={() => choose("no")}
         className={cn(
           base,

@@ -370,6 +370,9 @@ isOneToOne: false
 "create_event":
 { Args: { "p_address"?: string,"p_all_day"?: boolean,"p_category_id": number,"p_cover_path"?: string,"p_description"?: string,"p_ends_at"?: string,"p_external_url"?: string,"p_extra_info"?: string,"p_google_place_id"?: string,"p_lat"?: number,"p_lng"?: number,"p_location_name"?: string,"p_participant_ids"?: (string)[],"p_plan_id"?: string,"p_starts_at": string,"p_timezone"?: string,"p_title": string,"p_visibility"?: Database["public"]['Enums']["visibility"] }; Returns: string
                            },
+"create_plan":
+{ Args: { "p_address"?: string,"p_category_id": number,"p_description"?: string,"p_difficulty"?: number,"p_external_url"?: string,"p_id": string,"p_invitee_ids"?: (string)[],"p_location_name"?: string,"p_title": string,"p_visibility"?: Database["public"]['Enums']["visibility"] }; Returns: string
+                           },
 "delete_event":
 { Args: { "p_event": string }; Returns: undefined
                            },

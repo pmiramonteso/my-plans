@@ -23,6 +23,21 @@ export const CATEGORY_SLUGS = [
 
 export type CategorySlug = (typeof CATEGORY_SLUGS)[number];
 
+// categories.id en la BD (el orden del seed).
+export const CATEGORY_IDS: Record<CategorySlug, number> = {
+  hiking: 1,
+  summit: 2,
+  museum: 3,
+  restaurant: 4,
+  trip: 5,
+  city: 6,
+  other: 7,
+};
+
+export function categoryFromId(id: number): CategorySlug {
+  return CATEGORY_SLUGS.find((slug) => CATEGORY_IDS[slug] === id) ?? "other";
+}
+
 export type CategoryColor = "pine" | "granite" | "plum" | "ember" | "sky" | "sunrise" | "stone";
 
 export const CATEGORIES: Record<CategorySlug, { icon: LucideIcon; color: CategoryColor }> = {

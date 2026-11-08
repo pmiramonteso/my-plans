@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EventForm } from "@/features/events/components/event-form";
 import { getFriends } from "@/features/friends/queries";
+import { getCurrentProfile } from "@/features/profiles/queries";
 import { pageTitle } from "@/lib/metadata";
 
 export const generateMetadata = pageTitle("create.newEvent");
@@ -20,12 +21,13 @@ export default async function NewEventPage() {
         backLabel={tCommon("back")}
       />
       <Suspense fallback={<Skeleton className="h-[40rem] rounded-2xl" />}>
-        <Form submitLabel={t("submitEvent")} />
+        <Form />
       </Suspense>
     </div>
   );
 }
 
-async function Form({ submitLabel }: { submitLabel: string }) {
-  return <EventForm friends={await getFriends()} submitLabel={submitLabel} />;
+async function Form() {
+  const [friends, profile] = await Promise.all([getFriends(), getCurrentProfile()]);
+  return <EventForm friends={friends} timezone={profile.timezone} />;
 }

@@ -110,7 +110,14 @@
     "complete": "Marcar com a fet",
     "completeTitle": "Qui hi va venir?",
     "completeSubtitle": "Només compten per a l'historial i les estadístiques els qui hi van assistir de veritat.",
-    "completeSubmit": "Confirmar l'assistència"
+    "completeSubmit": "Confirmar l'assistència",
+    "delete": "Eliminar",
+    "deleteTitle": "Vols eliminar l'esdeveniment?",
+    "deleteHint": "Desapareixerà per a tots els participants. Aquesta acció no es pot desfer.",
+    "cancelShort": "Cancel·lar",
+    "cancelTitle": "Vols cancel·lar l'esdeveniment?",
+    "cancelHint": "Avisarem els participants. Si venia d'una proposta, aquesta torna a quedar oberta.",
+    "cancelledHint": "Aquest esdeveniment s'ha cancel·lat."
   },
   "plans": {
     "title": "Propostes",
@@ -139,7 +146,12 @@
     "invitations": "Convidats",
     "events": "Esdeveniments",
     "empty": "No hi ha propostes obertes",
-    "emptyHint": "Llança una idea i mira qui s'hi apunta."
+    "emptyHint": "Llança una idea i mira qui s'hi apunta.",
+    "edit": "Editar la proposta",
+    "editShort": "Editar",
+    "delete": "Eliminar",
+    "deleteTitle": "Vols eliminar la proposta?",
+    "deleteHint": "Deixarà de veure's per a tothom. Els esdeveniments que ja n'has organitzat es mantenen."
   },
   "create": {
     "title": "Què vols crear?",
@@ -170,8 +182,12 @@
       "extraInfo": "Informació pràctica",
       "extraInfoPlaceholder": "Punt de trobada, material, cotxe compartit…",
       "invite": "Convidar amics",
-      "inviteHint": "Només pots convidar els teus amics."
-    }
+      "inviteHint": "Només pots convidar els teus amics.",
+      "endDate": "Últim dia",
+      "inviteMore": "Convidar més amics",
+      "removeCover": "Treure la foto"
+    },
+    "coverError": "S'ha desat, però la portada no s'ha pogut pujar."
   },
   "friends": {
     "title": "Amics",
@@ -280,7 +296,9 @@
     "required": "Aquest camp és obligatori.",
     "tooLong": "És massa llarg.",
     "username": "De 3 a 20 caràcters: lletres minúscules, números i _.",
-    "invalid": "El valor no és vàlid."
+    "invalid": "El valor no és vàlid.",
+    "url": "Escriu un enllaç que comenci per http:// o https://.",
+    "endBeforeStart": "El final no pot ser anterior a l'inici."
   },
   "errors": {
     "not_authenticated": "La teva sessió ha caducat. Torna a iniciar sessió.",

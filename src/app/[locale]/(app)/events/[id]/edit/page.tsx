@@ -1,12 +1,11 @@
 import { Suspense } from "react";
-import { TZDate } from "@date-fns/tz";
-import { format } from "date-fns";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 
 import { PageHeader } from "@/components/shared/page-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EventForm } from "@/features/events/components/event-form";
+import { fromEventTimes } from "@/features/events/dates";
 import { getEvent } from "@/features/events/queries";
 import { getFriends } from "@/features/friends/queries";
 import { pageTitle } from "@/lib/metadata";
@@ -31,11 +30,10 @@ async function Edit({ params }: Pick<PageProps<"/[locale]/events/[id]/edit">, "p
     getTranslations("events"),
     getTranslations("common"),
   ]);
-  if (!event) notFound();
+  // Solo el organizador, y solo mientras esté programado.
+  if (!event || event.myRsvp !== null || event.status !== "scheduled") notFound();
 
-  // Fecha y hora locales del evento (en su propia zona horaria).
-  const start = new TZDate(event.startsAt, event.timezone);
-  const end = event.endsAt ? new TZDate(event.endsAt, event.timezone) : null;
+  const invited = new Set(event.participants.map((p) => p.profile.id));
 
   return (
     <>
@@ -46,20 +44,20 @@ async function Edit({ params }: Pick<PageProps<"/[locale]/events/[id]/edit">, "p
         backLabel={tCommon("back")}
       />
       <EventForm
-        friends={friends}
-        submitLabel={tCommon("save")}
-        showInvite={false}
+        eventId={event.id}
+        // Se puede invitar a más amigos; los ya invitados no se quitan desde aquí.
+        friends={friends.filter((f) => !invited.has(f.id))}
+        timezone={event.timezone}
+        coverUrl={event.coverUrl}
         defaults={{
           title: event.title,
           category: event.category,
-          description: event.description,
-          location: event.locationName,
-          link: event.externalUrl,
-          extraInfo: event.extraInfo,
-          allDay: event.allDay,
-          date: format(start, "yyyy-MM-dd"),
-          startTime: format(start, "HH:mm"),
-          endTime: end ? format(end, "HH:mm") : undefined,
+          description: event.description ?? "",
+          location: event.locationName ?? "",
+          link: event.externalUrl ?? "",
+          extraInfo: event.extraInfo ?? "",
+          visibility: event.visibility === "friends" ? "friends" : "invited",
+          ...fromEventTimes(event, event.timezone),
         }}
       />
     </>

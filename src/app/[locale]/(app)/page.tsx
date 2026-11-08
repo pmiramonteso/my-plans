@@ -3,7 +3,6 @@ import Link from "next/link";
 import { CalendarPlus, PartyPopper } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
-import { DemoNotice } from "@/components/shared/demo-notice";
 import { EmptyState } from "@/components/shared/empty-state";
 import { SectionHeader } from "@/components/shared/page-header";
 import { CardGridSkeleton, ListSkeleton } from "@/components/shared/skeletons";
@@ -26,7 +25,6 @@ export default async function HomePage() {
   return (
     <div className="space-y-10">
       <div>
-        <DemoNotice />
         <Suspense fallback={<Skeleton className="h-10 w-72" />}>
           <Greeting />
         </Suspense>
@@ -98,7 +96,7 @@ async function PendingSection() {
                 event={e}
                 action={
                   <div className="hidden sm:block">
-                    <RsvpButtons rsvp={e.myRsvp ?? "pending"} size="sm" />
+                    <RsvpButtons eventId={e.id} rsvp={e.myRsvp ?? "pending"} size="sm" />
                   </div>
                 }
               />
