@@ -72,7 +72,18 @@
     "previous": "Previous month",
     "next": "Next month",
     "dayEvents": "{count, plural, =0 {No events} one {# event} other {# events}}",
-    "empty": "Nothing scheduled this month"
+    "empty": "Nothing scheduled this month",
+    "filterLabel": "Filter events",
+    "filter": {
+      "all": "All",
+      "going": "Going",
+      "pending": "No reply",
+      "hosting": "Hosting"
+    },
+    "emptyFiltered": "No events match this filter this month",
+    "toComplete": "To wrap up",
+    "toCompleteHint": "These have already happened. Mark who came so they count in the history.",
+    "completeShort": "Wrap up"
   },
   "events": {
     "going": "{count, plural, =0 {Nobody confirmed yet} one {# going} other {# going}}",
@@ -117,7 +128,8 @@
     "cancelShort": "Cancel",
     "cancelTitle": "Cancel this event?",
     "cancelHint": "We'll let participants know. If it came from a proposal, the proposal will be open again.",
-    "cancelledHint": "This event has been cancelled."
+    "cancelledHint": "This event has been cancelled.",
+    "attendeesCount": "{count, plural, one {# attendee} other {# attendees}}"
   },
   "plans": {
     "title": "Proposals",
@@ -219,7 +231,11 @@
     "with": "With {name}",
     "empty": "No completed experiences yet",
     "emptyHint": "When you mark an event as done, it will show up here.",
-    "timeline": "Experiences"
+    "timeline": "Experiences",
+    "filterYear": "Year",
+    "allYears": "All time",
+    "allCategories": "All",
+    "emptyFiltered": "No experiences match these filters"
   },
   "stats": {
     "total": "Experiences",
@@ -298,7 +314,8 @@
     "username": "3 to 20 characters: lowercase letters, numbers and _.",
     "invalid": "The value is not valid.",
     "url": "Enter a link starting with http:// or https://.",
-    "endBeforeStart": "The end can't be before the start."
+    "endBeforeStart": "The end can't be before the start.",
+    "attendeesRequired": "Select at least one person who attended."
   },
   "errors": {
     "not_authenticated": "Your session has expired. Please sign in again.",

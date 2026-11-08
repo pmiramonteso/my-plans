@@ -2,12 +2,12 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 
-import { DemoNotice } from "@/components/shared/demo-notice";
 import { PageHeader } from "@/components/shared/page-header";
 import { CardGridSkeleton } from "@/components/shared/skeletons";
 import { UserAvatar } from "@/components/shared/user-avatar";
 import { getFriendshipWith } from "@/features/friends/queries";
 import { HistoryView } from "@/features/history/components/history-view";
+import { parseHistoryFilter } from "@/features/history/filters";
 import { getHistory } from "@/features/history/queries";
 import { getProfileByUsername } from "@/features/profiles/queries";
 import { getSharedStats } from "@/features/stats/queries";
@@ -15,23 +15,19 @@ import { pageTitle } from "@/lib/metadata";
 
 export const generateMetadata = pageTitle("history.title");
 
-export default function SharedHistoryPage({
-  params,
-}: PageProps<"/[locale]/history/with/[username]">) {
+type Props = PageProps<"/[locale]/history/with/[username]">;
+
+export default function SharedHistoryPage({ params, searchParams }: Props) {
   return (
-    <>
-      <DemoNotice />
-      <Suspense fallback={<CardGridSkeleton count={6} />}>
-        <SharedHistory params={params} />
-      </Suspense>
-    </>
+    <Suspense fallback={<CardGridSkeleton count={6} />}>
+      <SharedHistory params={params} searchParams={searchParams} />
+    </Suspense>
   );
 }
 
-async function SharedHistory({
-  params,
-}: Pick<PageProps<"/[locale]/history/with/[username]">, "params">) {
-  const { username } = await params;
+async function SharedHistory({ params, searchParams }: Pick<Props, "params" | "searchParams">) {
+  const [{ username }, query] = await Promise.all([params, searchParams]);
+  const filter = parseHistoryFilter(query);
   const [profile, t, tFriends] = await Promise.all([
     getProfileByUsername(username),
     getTranslations("history"),
@@ -39,7 +35,10 @@ async function SharedHistory({
   ]);
   // Solo entre amigos (get_shared_stats lo exige también en la BD).
   if (!profile || (await getFriendshipWith(profile.id)) !== "friends") notFound();
-  const [stats, events] = await Promise.all([getSharedStats(profile), getHistory(username)]);
+  const [stats, history] = await Promise.all([
+    getSharedStats(profile, filter.year),
+    getHistory(filter, profile),
+  ]);
 
   return (
     <>
@@ -54,7 +53,7 @@ async function SharedHistory({
         backHref={`/u/${profile.username}`}
         backLabel={profile.displayName}
       />
-      <HistoryView stats={stats} events={events} />
+      <HistoryView stats={stats} history={history} filter={filter} />
     </>
   );
 }

@@ -72,7 +72,18 @@
     "previous": "Mes anterior",
     "next": "Mes siguiente",
     "dayEvents": "{count, plural, =0 {Sin eventos} one {# evento} other {# eventos}}",
-    "empty": "Nada programado este mes"
+    "empty": "Nada programado este mes",
+    "filterLabel": "Filtrar eventos",
+    "filter": {
+      "all": "Todos",
+      "going": "Voy",
+      "pending": "Sin responder",
+      "hosting": "Organizo"
+    },
+    "emptyFiltered": "No hay eventos con este filtro este mes",
+    "toComplete": "Por cerrar",
+    "toCompleteHint": "Ya han pasado. Marca quién vino para que cuenten en el historial.",
+    "completeShort": "Cerrar"
   },
   "events": {
     "going": "{count, plural, =0 {Nadie confirmado aún} one {# va} other {# van}}",
@@ -117,7 +128,8 @@
     "cancelShort": "Cancelar",
     "cancelTitle": "¿Cancelar el evento?",
     "cancelHint": "Avisaremos a los participantes. Si venía de una propuesta, esta vuelve a quedar abierta.",
-    "cancelledHint": "Este evento se ha cancelado."
+    "cancelledHint": "Este evento se ha cancelado.",
+    "attendeesCount": "{count, plural, one {# asistente} other {# asistentes}}"
   },
   "plans": {
     "title": "Propuestas",
@@ -219,7 +231,11 @@
     "with": "Con {name}",
     "empty": "Todavía no hay experiencias realizadas",
     "emptyHint": "Cuando marques un evento como realizado, aparecerá aquí.",
-    "timeline": "Experiencias"
+    "timeline": "Experiencias",
+    "filterYear": "Año",
+    "allYears": "Siempre",
+    "allCategories": "Todas",
+    "emptyFiltered": "No hay experiencias con estos filtros"
   },
   "stats": {
     "total": "Experiencias",
@@ -298,7 +314,8 @@
     "username": "De 3 a 20 caracteres: letras minúsculas, números y _.",
     "invalid": "El valor no es válido.",
     "url": "Escribe un enlace que empiece por http:// o https://.",
-    "endBeforeStart": "El final no puede ser anterior al inicio."
+    "endBeforeStart": "El final no puede ser anterior al inicio.",
+    "attendeesRequired": "Marca al menos a una persona que asistiera."
   },
   "errors": {
     "not_authenticated": "Tu sesión ha caducado. Vuelve a iniciar sesión.",

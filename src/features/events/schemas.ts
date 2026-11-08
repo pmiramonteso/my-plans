@@ -55,6 +55,12 @@ export const rsvpSchema = z.object({
 
 export const eventIdSchema = z.object({ id: z.uuid() });
 
+// Quién asistió de verdad (complete_event exige al menos uno).
+export const completeEventSchema = z.object({
+  id: z.uuid(),
+  attendees: uuidList.refine((ids) => ids.length > 0, "attendeesRequired"),
+});
+
 // covers/events/{event_id}/{uuid}.webp
 export const eventCoverSchema = z
   .object({ id: z.uuid(), path: z.string() })

@@ -1,11 +1,12 @@
 import { Suspense } from "react";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 
 import { PageHeader } from "@/components/shared/page-header";
 import { ListSkeleton } from "@/components/shared/skeletons";
 import { AttendanceForm } from "@/features/events/components/attendance-form";
 import { getEvent } from "@/features/events/queries";
+import { requestNow } from "@/lib/dates";
 import { pageTitle } from "@/lib/metadata";
 
 export const generateMetadata = pageTitle("events.complete");
@@ -22,8 +23,17 @@ export default function CompleteEventPage({ params }: PageProps<"/[locale]/event
 
 async function Complete({ params }: Pick<PageProps<"/[locale]/events/[id]/complete">, "params">) {
   const { id } = await params;
-  const [event, t] = await Promise.all([getEvent(id), getTranslations("events")]);
+  const [event, t, now] = await Promise.all([
+    getEvent(id),
+    getTranslations("events"),
+    requestNow(),
+  ]);
   if (!event) notFound();
+  // Solo el organizador, con el evento programado y ya empezado (la RPC
+  // complete_event lo vuelve a comprobar).
+  const canComplete =
+    event.myRsvp === null && event.status === "scheduled" && new Date(event.startsAt) <= now;
+  if (!canComplete) redirect(`/events/${event.id}`);
 
   return (
     <>
@@ -33,7 +43,7 @@ async function Complete({ params }: Pick<PageProps<"/[locale]/events/[id]/comple
         backHref={`/events/${event.id}`}
         backLabel={event.title}
       />
-      <AttendanceForm participants={event.participants} />
+      <AttendanceForm eventId={event.id} participants={event.participants} />
     </>
   );
 }
