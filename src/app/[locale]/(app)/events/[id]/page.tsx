@@ -6,7 +6,6 @@ import {
   Camera,
   CircleCheck,
   ExternalLink,
-  ImagePlus,
   Info,
   Lightbulb,
   MapPin,
@@ -21,12 +20,13 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { DetailSkeleton } from "@/components/shared/skeletons";
 import { UserAvatar } from "@/components/shared/user-avatar";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { EventManage } from "@/features/events/components/event-manage";
 import { EventWhen } from "@/features/events/components/event-when";
 import { RsvpButtons } from "@/features/events/components/rsvp-buttons";
 import { getEvent } from "@/features/events/queries";
 import type { EventDetail, RsvpStatus } from "@/features/events/types";
+import { PhotoGallery } from "@/features/photos/components/photo-gallery";
+import { PhotoUploader } from "@/features/photos/components/photo-uploader";
 import { requestNow } from "@/lib/dates";
 import { pageTitle } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
@@ -196,11 +196,13 @@ async function EventAction({ event, isHost }: { event: EventDetail; isHost: bool
   const [t, now] = await Promise.all([getTranslations("events"), requestNow()]);
 
   if (event.status === "completed") {
-    return (
-      <Button variant="outline" className="w-full">
-        <ImagePlus data-icon="inline-start" />
-        {t("addPhotos")}
-      </Button>
+    return event.canAddPhotos ? (
+      <div className="space-y-3">
+        <p className="text-muted-foreground text-sm">{t("completedPhotosHint")}</p>
+        <PhotoUploader eventId={event.id} variant="default" />
+      </div>
+    ) : (
+      <p className="text-muted-foreground text-sm">{t("completedHint")}</p>
     );
   }
 
@@ -228,9 +230,9 @@ async function Gallery({ event }: { event: EventDetail }) {
     <Panel
       title={t("gallery")}
       action={
-        event.photoCount > 0 && (
+        event.photos.length > 0 && (
           <span className="text-muted-foreground text-sm">
-            {t("photos", { count: event.photoCount })}
+            {t("photos", { count: event.photos.length })}
           </span>
         )
       }
@@ -239,25 +241,15 @@ async function Gallery({ event }: { event: EventDetail }) {
         <EmptyState
           icon={Camera}
           title={t("noPhotos")}
-          description={t("noPhotosHint")}
+          description={event.canAddPhotos ? t("noPhotosYours") : t("noPhotosHint")}
           className="border-none py-6"
+          action={event.canAddPhotos && <PhotoUploader eventId={event.id} className="w-auto" />}
         />
       ) : (
-        <ul className="columns-2 gap-2 sm:columns-3 [&>li]:mb-2">
-          {event.photos.map((photo) => (
-            <li key={photo.id} className="break-inside-avoid overflow-hidden rounded-xl">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={photo.url}
-                alt=""
-                width={photo.width}
-                height={photo.height}
-                loading="lazy"
-                className="bg-muted h-auto w-full transition duration-300 hover:scale-[1.03]"
-              />
-            </li>
-          ))}
-        </ul>
+        <div className="space-y-4">
+          <PhotoGallery photos={event.photos} title={event.title} />
+          {event.canAddPhotos && <PhotoUploader eventId={event.id} />}
+        </div>
       )}
     </Panel>
   );

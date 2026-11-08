@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { CircleCheck, Loader2 } from "lucide-react";
+import { CircleCheck, Loader2, MountainSnow } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { UserAvatar } from "@/components/shared/user-avatar";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { completeEvent } from "@/features/events/actions";
-import type { EventParticipant } from "@/features/events/types";
+import type { EventDetail, EventParticipant } from "@/features/events/types";
 import { reportActionError } from "@/lib/form";
 
 // Marca quién asistió de verdad. Los que confirmaron vienen preseleccionados.
@@ -15,11 +16,24 @@ import { reportActionError } from "@/lib/form";
 export function AttendanceForm({
   eventId,
   participants,
+  peaks,
 }: {
   eventId: string;
   participants: EventParticipant[];
+  peaks: EventDetail["peaks"];
 }) {
   const t = useTranslations();
+  // Desnivel y km por cima (texto de los inputs; "" = sin dato).
+  const [ascents, setAscents] = useState(() =>
+    peaks.map((p) => ({
+      id: p.id,
+      name: p.name,
+      elevationGainM: p.elevationGainM?.toString() ?? "",
+      distanceKm: p.distanceKm?.toString() ?? "",
+    })),
+  );
+  const setAscent = (id: string, patch: Partial<(typeof ascents)[number]>) =>
+    setAscents((list) => list.map((a) => (a.id === id ? { ...a, ...patch } : a)));
   const [attendees, setAttendees] = useState(
     () =>
       new Set(
@@ -44,7 +58,15 @@ export function AttendanceForm({
       onSubmit={(e) => {
         e.preventDefault();
         startTransition(async () => {
-          const result = await completeEvent({ id: eventId, attendees: [...attendees] });
+          const result = await completeEvent({
+            id: eventId,
+            attendees: [...attendees],
+            ascents: ascents.map(({ id, elevationGainM, distanceKm }) => ({
+              id,
+              elevationGainM,
+              distanceKm,
+            })),
+          });
           if (!result.ok) reportActionError(result, t);
         });
       }}
@@ -77,6 +99,40 @@ export function AttendanceForm({
             </li>
           ))}
         </ul>
+        {ascents.length > 0 && (
+          <section className="mt-6 space-y-3">
+            <div>
+              <h2 className="font-heading text-lg font-semibold">{t("peaks.ascentTitle")}</h2>
+              <p className="text-muted-foreground text-sm">{t("peaks.ascentHint")}</p>
+            </div>
+            <ul className="bg-card divide-y overflow-hidden rounded-2xl border">
+              {ascents.map((a) => (
+                <li key={a.id} className="flex flex-wrap items-center gap-3 p-4">
+                  <MountainSnow aria-hidden className="text-cat-granite size-5 shrink-0" />
+                  <span className="min-w-0 flex-1 font-medium">{a.name}</span>
+                  <span className="flex gap-2">
+                    <Input
+                      inputMode="numeric"
+                      className="w-28"
+                      placeholder={t("peaks.elevationShort")}
+                      aria-label={`${t("peaks.elevation")} · ${a.name}`}
+                      value={a.elevationGainM}
+                      onChange={(e) => setAscent(a.id, { elevationGainM: e.target.value })}
+                    />
+                    <Input
+                      inputMode="decimal"
+                      className="w-24"
+                      placeholder={t("peaks.distanceShort")}
+                      aria-label={`${t("peaks.distance")} · ${a.name}`}
+                      value={a.distanceKm}
+                      onChange={(e) => setAscent(a.id, { distanceKm: e.target.value })}
+                    />
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </fieldset>
       <div className="flex flex-col-reverse items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-muted-foreground text-sm" aria-live="polite">

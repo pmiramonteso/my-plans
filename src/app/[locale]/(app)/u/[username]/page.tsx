@@ -13,7 +13,7 @@ import { FriendshipButton } from "@/features/friends/components/friendship-butto
 import { getFriendshipWith } from "@/features/friends/queries";
 import { getCurrentProfile, getProfileByUsername } from "@/features/profiles/queries";
 import { StatGrid } from "@/features/stats/components/stat-grid";
-import { getMyStats, getSharedStats } from "@/features/stats/queries";
+import { getMyStats, getSharedStats, getUserStats } from "@/features/stats/queries";
 import { pageTitle } from "@/lib/metadata";
 
 export const generateMetadata = pageTitle("nav.profile");
@@ -41,12 +41,13 @@ async function Profile({ params }: Pick<PageProps<"/[locale]/u/[username]">, "pa
 
   const isMe = profile.id === me.id;
   const friendship = isMe ? "none" : await getFriendshipWith(profile.id);
-  // Las estadísticas compartidas solo existen entre amigos (la RPC lo exige).
-  const stats = isMe
-    ? await getMyStats()
-    : friendship === "friends"
-      ? await getSharedStats(profile)
-      : null;
+  // Las estadísticas de otro (propias y compartidas) solo entre amigos (las RPC
+  // lo exigen).
+  const isFriend = friendship === "friends";
+  const [stats, theirStats] = await Promise.all([
+    isMe ? getMyStats() : isFriend ? getSharedStats(profile) : null,
+    isFriend ? getUserStats(profile.id) : null,
+  ]);
 
   return (
     <>
@@ -88,6 +89,13 @@ async function Profile({ params }: Pick<PageProps<"/[locale]/u/[username]">, "pa
         </section>
       ) : (
         <EmptyState icon={Lock} title={t("notFriendsYet")} description={t("notFriendsHint")} />
+      )}
+
+      {theirStats && theirStats.total > 0 && (
+        <section className="mt-10 space-y-4">
+          <SectionHeader title={t("theirStats", { name: profile.displayName.split(" ")[0] })} />
+          <StatGrid stats={theirStats} />
+        </section>
       )}
     </>
   );

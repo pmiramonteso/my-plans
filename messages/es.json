@@ -129,7 +129,10 @@
     "cancelTitle": "¿Cancelar el evento?",
     "cancelHint": "Avisaremos a los participantes. Si venía de una propuesta, esta vuelve a quedar abierta.",
     "cancelledHint": "Este evento se ha cancelado.",
-    "attendeesCount": "{count, plural, one {# asistente} other {# asistentes}}"
+    "attendeesCount": "{count, plural, one {# asistente} other {# asistentes}}",
+    "completedHint": "Este evento ya se ha realizado.",
+    "completedPhotosHint": "Comparte las fotos de ese día con el resto.",
+    "noPhotosYours": "Sé la primera persona en subir las tuyas."
   },
   "plans": {
     "title": "Propuestas",
@@ -223,7 +226,8 @@
     "noResults": "No hay nadie con ese nombre",
     "results": "Resultados",
     "notFriendsYet": "Aún no sois amigos",
-    "notFriendsHint": "Cuando lo seáis, aquí verás lo que habéis hecho juntos."
+    "notFriendsHint": "Cuando lo seáis, aquí verás lo que habéis hecho juntos.",
+    "theirStats": "Las experiencias de {name}"
   },
   "history": {
     "title": "Historial",
@@ -249,7 +253,13 @@
     "distinctPeaks": "Cimas distintas",
     "distinctPlaces": "Lugares",
     "elevation": "Desnivel acumulado",
-    "distance": "Kilómetros"
+    "distance": "Kilómetros",
+    "summitAscents": "Ascensiones",
+    "maxAltitude": "Cima más alta",
+    "since": "Desde el {date}",
+    "climbedPeaks": "Cimas conseguidas",
+    "lastAscent": "Última vez: {date}",
+    "ascents": "{count, plural, one {# ascensión} other {# ascensiones}}"
   },
   "notifications": {
     "title": "Notificaciones",
@@ -315,7 +325,8 @@
     "invalid": "El valor no es válido.",
     "url": "Escribe un enlace que empiece por http:// o https://.",
     "endBeforeStart": "El final no puede ser anterior al inicio.",
-    "attendeesRequired": "Marca al menos a una persona que asistiera."
+    "attendeesRequired": "Marca al menos a una persona que asistiera.",
+    "tooMany": "Has elegido demasiados."
   },
   "errors": {
     "not_authenticated": "Tu sesión ha caducado. Vuelve a iniciar sesión.",
@@ -328,5 +339,35 @@
     "event_not_started": "El evento todavía no ha empezado.",
     "conflict": "Ya existe. Prueba con otro valor.",
     "unknown": "Algo ha fallado. Inténtalo de nuevo."
+  },
+  "photos": {
+    "uploading": "Subiendo {done} de {total}…",
+    "saving": "Guardando…",
+    "uploaded": "{count, plural, one {# foto subida} other {# fotos subidas}}",
+    "failed": "{count, plural, one {No se pudo subir # foto} other {No se pudieron subir # fotos}}",
+    "tooMany": "Puedes subir hasta {max} fotos a la vez. Subimos las primeras {max}.",
+    "open": "Foto {index} de {total}",
+    "by": "Subida por {name}",
+    "previous": "Foto anterior",
+    "next": "Foto siguiente",
+    "delete": "Eliminar",
+    "deleteTitle": "¿Eliminar la foto?",
+    "deleteHint": "Se borrará para todos los participantes. Esta acción no se puede deshacer."
+  },
+  "peaks": {
+    "label": "Cimas",
+    "hint": "Busca la cima o añádela si aún no está en el catálogo.",
+    "ascentTitle": "La ascensión",
+    "ascentHint": "El desnivel y los km de cada cima suman en las estadísticas.",
+    "search": "Buscar una cima…",
+    "noResults": "No encontramos esa cima.",
+    "create": "Añadir «{name}»",
+    "altitudeFor": "Altitud de {name} (m)",
+    "add": "Añadir",
+    "remove": "Quitar {name}",
+    "elevation": "Desnivel (m)",
+    "elevationShort": "Desnivel",
+    "distance": "Distancia (km)",
+    "distanceShort": "Km"
   }
 }

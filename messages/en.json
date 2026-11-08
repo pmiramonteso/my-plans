@@ -129,7 +129,10 @@
     "cancelTitle": "Cancel this event?",
     "cancelHint": "We'll let participants know. If it came from a proposal, the proposal will be open again.",
     "cancelledHint": "This event has been cancelled.",
-    "attendeesCount": "{count, plural, one {# attendee} other {# attendees}}"
+    "attendeesCount": "{count, plural, one {# attendee} other {# attendees}}",
+    "completedHint": "This event has already happened.",
+    "completedPhotosHint": "Share your photos from the day with everyone.",
+    "noPhotosYours": "Be the first to upload yours."
   },
   "plans": {
     "title": "Proposals",
@@ -223,7 +226,8 @@
     "noResults": "Nobody with that name",
     "results": "Results",
     "notFriendsYet": "You're not friends yet",
-    "notFriendsHint": "Once you are, you'll see what you've done together here."
+    "notFriendsHint": "Once you are, you'll see what you've done together here.",
+    "theirStats": "{name}'s experiences"
   },
   "history": {
     "title": "History",
@@ -249,7 +253,13 @@
     "distinctPeaks": "Distinct peaks",
     "distinctPlaces": "Places",
     "elevation": "Total elevation gain",
-    "distance": "Kilometres"
+    "distance": "Kilometres",
+    "summitAscents": "Ascents",
+    "maxAltitude": "Highest summit",
+    "since": "Since {date}",
+    "climbedPeaks": "Summits reached",
+    "lastAscent": "Last time: {date}",
+    "ascents": "{count, plural, one {# ascent} other {# ascents}}"
   },
   "notifications": {
     "title": "Notifications",
@@ -315,7 +325,8 @@
     "invalid": "The value is not valid.",
     "url": "Enter a link starting with http:// or https://.",
     "endBeforeStart": "The end can't be before the start.",
-    "attendeesRequired": "Select at least one person who attended."
+    "attendeesRequired": "Select at least one person who attended.",
+    "tooMany": "You've picked too many."
   },
   "errors": {
     "not_authenticated": "Your session has expired. Please sign in again.",
@@ -328,5 +339,35 @@
     "event_not_started": "The event hasn't started yet.",
     "conflict": "That already exists. Try another value.",
     "unknown": "Something went wrong. Please try again."
+  },
+  "photos": {
+    "uploading": "Uploading {done} of {total}…",
+    "saving": "Saving…",
+    "uploaded": "{count, plural, one {# photo uploaded} other {# photos uploaded}}",
+    "failed": "{count, plural, one {# photo couldn't be uploaded} other {# photos couldn't be uploaded}}",
+    "tooMany": "You can upload up to {max} photos at a time. We'll upload the first {max}.",
+    "open": "Photo {index} of {total}",
+    "by": "Uploaded by {name}",
+    "previous": "Previous photo",
+    "next": "Next photo",
+    "delete": "Delete",
+    "deleteTitle": "Delete this photo?",
+    "deleteHint": "It will be removed for all participants. This can't be undone."
+  },
+  "peaks": {
+    "label": "Summits",
+    "hint": "Search for the summit or add it if it isn't in the catalogue yet.",
+    "ascentTitle": "The ascent",
+    "ascentHint": "Each summit's elevation gain and distance count towards the stats.",
+    "search": "Search for a summit…",
+    "noResults": "We couldn't find that summit.",
+    "create": "Add “{name}”",
+    "altitudeFor": "Altitude of {name} (m)",
+    "add": "Add",
+    "remove": "Remove {name}",
+    "elevation": "Elevation gain (m)",
+    "elevationShort": "Gain",
+    "distance": "Distance (km)",
+    "distanceShort": "Km"
   }
 }

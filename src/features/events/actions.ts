@@ -4,6 +4,7 @@ import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { CATEGORY_IDS } from "@/features/categories/config";
+import { saveAscents, syncPeaks } from "@/features/peaks/sync";
 import { getSessionProfile } from "@/features/profiles/queries";
 import { createAction, unwrap } from "@/lib/action";
 import { removeCover } from "@/lib/storage";
@@ -39,6 +40,8 @@ export const createEvent = createAction(eventSchema, async (input) => {
       p_participant_ids: input.invitees,
     }),
   );
+  // create_event ya copia las cimas de la propuesta; aquí quedan las elegidas.
+  await syncPeaks(supabase, { event: id }, input.peaks);
   return { id };
 });
 
@@ -76,6 +79,7 @@ export const updateEvent = createAction(updateEventSchema, async ({ id, ...input
       ),
     );
   }
+  await syncPeaks(supabase, { event: id }, input.peaks);
   refresh();
   return { id };
 });
@@ -127,11 +131,16 @@ export const cancelEvent = createAction(eventIdSchema, async ({ id }) => {
 
 // Marca el evento como realizado: solo los asistentes suman en historial y
 // estadísticas. Los asistentes reciben 'event_completed' (trigger).
-export const completeEvent = createAction(completeEventSchema, async ({ id, attendees }) => {
-  const supabase = await createClient();
-  unwrap(await supabase.rpc("complete_event", { p_event: id, p_attendees: attendees }));
-  redirect(`/events/${id}`);
-});
+export const completeEvent = createAction(
+  completeEventSchema,
+  async ({ id, attendees, ascents }) => {
+    const supabase = await createClient();
+    // Antes de cerrar: las estadísticas se calculan con estos datos.
+    await saveAscents(supabase, id, ascents);
+    unwrap(await supabase.rpc("complete_event", { p_event: id, p_attendees: attendees }));
+    redirect(`/events/${id}`);
+  },
+);
 
 // Borrado lógico (solo el creador).
 export const deleteEvent = createAction(eventIdSchema, async ({ id }) => {

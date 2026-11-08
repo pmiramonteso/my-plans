@@ -7,6 +7,7 @@ import { EventCard } from "@/features/events/components/event-card";
 import { HistoryFilters } from "@/features/history/components/history-filters";
 import { eventYear, type HistoryFilter } from "@/features/history/filters";
 import type { History } from "@/features/history/queries";
+import { ClimbedPeaks } from "@/features/stats/components/climbed-peaks";
 import { StatGrid } from "@/features/stats/components/stat-grid";
 import type { UserStats } from "@/features/stats/types";
 
@@ -36,6 +37,7 @@ export function HistoryView({
         <HistoryFilters filter={filter} years={years} categories={categories} />
         <StatGrid stats={stats} />
       </div>
+      <ClimbedPeaks peaks={history.peaks} />
       <section className="space-y-8">
         <SectionHeader title={t("timeline")} count={events.length} />
         {events.length === 0 ? (

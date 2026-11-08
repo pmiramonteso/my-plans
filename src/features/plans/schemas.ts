@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { CATEGORY_SLUGS } from "@/features/categories/config";
+import { peakSelectionSchema } from "@/features/peaks/schemas";
 import { optionalText, optionalUrl, requiredText, uuidList } from "@/lib/validation";
 
 // Igual que los CHECK de public.plans.
@@ -17,6 +18,7 @@ export const planFieldsSchema = z.object({
     .transform((v) => (v ? Number(v) : null)),
   visibility: z.enum(["private", "invited", "friends"]),
   invitees: uuidList,
+  peaks: peakSelectionSchema, // cimas objetivo (plan_peaks)
 });
 
 // Una propuesta privada no tiene invitados: si se marcaron antes de cambiar la

@@ -51,7 +51,8 @@ const TZ = "Europe/Madrid";
 // Fotos de ejemplo: degradados SVG en línea, sin peticiones externas.
 function photo(id: string, hue: number, w = 1200, h = 900) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl(${hue} 35% 62%)"/><stop offset="1" stop-color="hsl(${hue + 30} 30% 32%)"/></linearGradient></defs><rect width="100%" height="100%" fill="url(#g)"/><path d="M0 ${h * 0.8} L${w * 0.3} ${h * 0.45} L${w * 0.5} ${h * 0.65} L${w * 0.72} ${h * 0.35} L${w} ${h * 0.75} V${h} H0Z" fill="hsl(${hue} 25% 22% / .55)"/></svg>`;
-  return { id, url: `data:image/svg+xml,${encodeURIComponent(svg)}`, width: w, height: h };
+  const url = `data:image/svg+xml,${encodeURIComponent(svg)}`;
+  return { id, url, thumbUrl: url, width: w, height: h, uploader: null, canDelete: false };
 }
 
 export function buildMocks(now: Date) {
@@ -218,6 +219,7 @@ export function buildMocks(now: Date) {
       photos: Array.from({ length: Math.min(e.photoCount, 9) }, (_, i) =>
         photo(`${id}-ph${i}`, 140 + i * 17, i % 3 === 0 ? 900 : 1200, i % 3 === 0 ? 1200 : 900),
       ),
+      canAddPhotos: e.status === "completed",
     };
   };
 
@@ -325,9 +327,13 @@ export function buildMocks(now: Date) {
     total: 27,
     byCategory: { hikes: 9, summits: 6, restaurants: 5, museums: 3, trips: 2, cities: 2 },
     distinctPeaks: 6,
+    summitAscents: 8,
+    maxAltitudeM: 3404,
     distinctPlaces: 19,
     elevationGainM: 8740,
     distanceKm: 162,
+    firstAt: at(-700, 8).toISOString(),
+    lastAt: at(-6, 8).toISOString(),
   };
 
   return { events, plans, eventDetail, planDetail, friends, requests, notifications, stats };

@@ -6,7 +6,7 @@ import type { ProfileSummary } from "@/features/profiles/types";
 import { unwrap } from "@/lib/action";
 import { requestNow } from "@/lib/dates";
 import { DESIGN_PREVIEW } from "@/lib/preview";
-import { signCoverUrls } from "@/lib/storage";
+import { signCoverUrls, signUrls } from "@/lib/storage";
 import { createClient, type ServerSupabaseClient } from "@/lib/supabase/server";
 import { loadMocks } from "@/mocks/data";
 import type { Tables } from "@/types/database";
@@ -235,16 +235,26 @@ export async function getEvent(id: string): Promise<EventDetail | null> {
     .maybeSingle();
   if (!event) return null;
 
-  const [{ summaries, participants, profiles }, peaks] = await Promise.all([
+  const [{ summaries, participants, profiles }, peaks, photos, now] = await Promise.all([
     hydrate(supabase, me.id, [event]),
     supabase
       .from("event_peaks")
       .select("elevation_gain_m, distance_km, peaks(id, name, altitude_m)")
       .eq("event_id", id)
       .then(unwrap),
+    getEventPhotos(supabase, id),
+    requestNow(),
   ]);
   const summary = summaries[0];
   if (!summary) return null;
+
+  const isHost = summary.myRsvp === null;
+  const mine = participants.find((p) => p.user_id === me.id);
+  // Igual que private.can_contribute_photos (la RLS lo vuelve a comprobar).
+  const canAddPhotos =
+    event.status !== "cancelled" &&
+    new Date(event.starts_at) <= now &&
+    Boolean(mine && (mine.rsvp === "going" || mine.attended));
 
   // Organizador primero; luego quien va, pendientes y quien no puede.
   const ORDER = { host: 0, cohost: 1, guest: 2 } as const;
@@ -283,7 +293,36 @@ export async function getEvent(id: string): Promise<EventDetail | null> {
           ]
         : [],
     ),
-    // TODO(Fase 6): galería (event_photos + signed URLs de las miniaturas).
-    photos: [],
+    photos: photos.map((p) => ({
+      ...p,
+      uploader: profiles.get(p.uploaderId) ?? null,
+      canDelete: p.uploaderId === me.id || isHost,
+    })),
+    canAddPhotos,
   };
+}
+
+// Fotos del evento (las más recientes primero) con la foto y la miniatura
+// firmadas en lote. La RLS y la política del bucket deciden quién las ve.
+async function getEventPhotos(supabase: ServerSupabaseClient, eventId: string) {
+  const rows = unwrap(
+    await supabase
+      .from("event_photos")
+      .select("id, uploader_id, storage_path, thumb_path, width, height")
+      .eq("event_id", eventId)
+      .order("created_at", { ascending: false })
+      .limit(300),
+  );
+  const urls = await signUrls(
+    supabase,
+    "event-photos",
+    rows.flatMap((r) => [r.storage_path, r.thumb_path]),
+  );
+  return rows.flatMap((r) => {
+    const url = urls.get(r.storage_path);
+    const thumbUrl = urls.get(r.thumb_path);
+    return url && thumbUrl
+      ? [{ id: r.id, uploaderId: r.uploader_id, url, thumbUrl, width: r.width, height: r.height }]
+      : [];
+  });
 }

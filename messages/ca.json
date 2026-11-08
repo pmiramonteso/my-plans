@@ -129,7 +129,10 @@
     "cancelTitle": "Vols cancel·lar l'esdeveniment?",
     "cancelHint": "Avisarem els participants. Si venia d'una proposta, aquesta torna a quedar oberta.",
     "cancelledHint": "Aquest esdeveniment s'ha cancel·lat.",
-    "attendeesCount": "{count, plural, one {# assistent} other {# assistents}}"
+    "attendeesCount": "{count, plural, one {# assistent} other {# assistents}}",
+    "completedHint": "Aquest esdeveniment ja s'ha fet.",
+    "completedPhotosHint": "Comparteix les fotos d'aquell dia amb la resta.",
+    "noPhotosYours": "Sigues la primera persona a pujar les teves."
   },
   "plans": {
     "title": "Propostes",
@@ -223,7 +226,8 @@
     "noResults": "No hi ha ningú amb aquest nom",
     "results": "Resultats",
     "notFriendsYet": "Encara no sou amics",
-    "notFriendsHint": "Quan ho sigueu, aquí veureu el que heu fet junts."
+    "notFriendsHint": "Quan ho sigueu, aquí veureu el que heu fet junts.",
+    "theirStats": "Les experiències de {name}"
   },
   "history": {
     "title": "Historial",
@@ -249,7 +253,13 @@
     "distinctPeaks": "Cims diferents",
     "distinctPlaces": "Llocs",
     "elevation": "Desnivell acumulat",
-    "distance": "Quilòmetres"
+    "distance": "Quilòmetres",
+    "summitAscents": "Ascensions",
+    "maxAltitude": "Cim més alt",
+    "since": "Des del {date}",
+    "climbedPeaks": "Cims assolits",
+    "lastAscent": "Última vegada: {date}",
+    "ascents": "{count, plural, one {# ascensió} other {# ascensions}}"
   },
   "notifications": {
     "title": "Notificacions",
@@ -315,7 +325,8 @@
     "invalid": "El valor no és vàlid.",
     "url": "Escriu un enllaç que comenci per http:// o https://.",
     "endBeforeStart": "El final no pot ser anterior a l'inici.",
-    "attendeesRequired": "Marca almenys una persona que hi assistís."
+    "attendeesRequired": "Marca almenys una persona que hi assistís.",
+    "tooMany": "N'has triat massa."
   },
   "errors": {
     "not_authenticated": "La teva sessió ha caducat. Torna a iniciar sessió.",
@@ -328,5 +339,35 @@
     "event_not_started": "L'esdeveniment encara no ha començat.",
     "conflict": "Ja existeix. Prova amb un altre valor.",
     "unknown": "Alguna cosa ha fallat. Torna-ho a provar."
+  },
+  "photos": {
+    "uploading": "Pujant {done} de {total}…",
+    "saving": "Desant…",
+    "uploaded": "{count, plural, one {# foto pujada} other {# fotos pujades}}",
+    "failed": "{count, plural, one {No s'ha pogut pujar # foto} other {No s'han pogut pujar # fotos}}",
+    "tooMany": "Pots pujar fins a {max} fotos alhora. Pugem les primeres {max}.",
+    "open": "Foto {index} de {total}",
+    "by": "Pujada per {name}",
+    "previous": "Foto anterior",
+    "next": "Foto següent",
+    "delete": "Elimina",
+    "deleteTitle": "Vols eliminar la foto?",
+    "deleteHint": "S'esborrarà per a tots els participants. Aquesta acció no es pot desfer."
+  },
+  "peaks": {
+    "label": "Cims",
+    "hint": "Busca el cim o afegeix-lo si encara no és al catàleg.",
+    "ascentTitle": "L'ascensió",
+    "ascentHint": "El desnivell i els km de cada cim sumen a les estadístiques.",
+    "search": "Busca un cim…",
+    "noResults": "No hem trobat aquest cim.",
+    "create": "Afegeix «{name}»",
+    "altitudeFor": "Altitud de {name} (m)",
+    "add": "Afegeix",
+    "remove": "Treu {name}",
+    "elevation": "Desnivell (m)",
+    "elevationShort": "Desnivell",
+    "distance": "Distància (km)",
+    "distanceShort": "Km"
   }
 }
