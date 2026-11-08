@@ -226,7 +226,8 @@
     "noResults": "No hi ha ningú amb aquest nom",
     "results": "Resultats",
     "notFriendsYet": "Encara no sou amics",
-    "notFriendsHint": "Quan ho sigueu, aquí veureu el que heu fet junts."
+    "notFriendsHint": "Quan ho sigueu, aquí veureu el que heu fet junts.",
+    "theirStats": "Les experiències de {name}"
   },
   "history": {
     "title": "Historial",
@@ -252,7 +253,13 @@
     "distinctPeaks": "Cims diferents",
     "distinctPlaces": "Llocs",
     "elevation": "Desnivell acumulat",
-    "distance": "Quilòmetres"
+    "distance": "Quilòmetres",
+    "summitAscents": "Ascensions",
+    "maxAltitude": "Cim més alt",
+    "since": "Des del {date}",
+    "climbedPeaks": "Cims assolits",
+    "lastAscent": "Última vegada: {date}",
+    "ascents": "{count, plural, one {# ascensió} other {# ascensions}}"
   },
   "notifications": {
     "title": "Notificacions",

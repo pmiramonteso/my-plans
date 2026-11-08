@@ -327,9 +327,13 @@ export function buildMocks(now: Date) {
     total: 27,
     byCategory: { hikes: 9, summits: 6, restaurants: 5, museums: 3, trips: 2, cities: 2 },
     distinctPeaks: 6,
+    summitAscents: 8,
+    maxAltitudeM: 3404,
     distinctPlaces: 19,
     elevationGainM: 8740,
     distanceKm: 162,
+    firstAt: at(-700, 8).toISOString(),
+    lastAt: at(-6, 8).toISOString(),
   };
 
   return { events, plans, eventDetail, planDetail, friends, requests, notifications, stats };

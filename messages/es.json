@@ -226,7 +226,8 @@
     "noResults": "No hay nadie con ese nombre",
     "results": "Resultados",
     "notFriendsYet": "Aún no sois amigos",
-    "notFriendsHint": "Cuando lo seáis, aquí verás lo que habéis hecho juntos."
+    "notFriendsHint": "Cuando lo seáis, aquí verás lo que habéis hecho juntos.",
+    "theirStats": "Las experiencias de {name}"
   },
   "history": {
     "title": "Historial",
@@ -252,7 +253,13 @@
     "distinctPeaks": "Cimas distintas",
     "distinctPlaces": "Lugares",
     "elevation": "Desnivel acumulado",
-    "distance": "Kilómetros"
+    "distance": "Kilómetros",
+    "summitAscents": "Ascensiones",
+    "maxAltitude": "Cima más alta",
+    "since": "Desde el {date}",
+    "climbedPeaks": "Cimas conseguidas",
+    "lastAscent": "Última vez: {date}",
+    "ascents": "{count, plural, one {# ascensión} other {# ascensiones}}"
   },
   "notifications": {
     "title": "Notificaciones",

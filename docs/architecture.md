@@ -362,6 +362,17 @@ No cambia ninguna tabla ni ninguna consulta de la app.
 * **Pruebas pgTAP:** `04_history.test.sql` (cerrar, asistentes, historial compartido, año y visibilidad). Las pruebas solo tocan los perfiles `@test.dev`, así que pasan aunque la BD local tenga usuarios reales.
 * **Pendiente:** paginación keyset del historial (hoy se cargan todos los eventos realizados); la galería y la subida de fotos son de la Fase 6.
 
+### 6.13 Notas de implementación (Fase 6)
+
+* **Subida de fotos:** solo en el navegador (`features/photos/upload.ts`). Cada archivo se decodifica una vez y se comprime a WebP: 2560 px (calidad 0,82) y miniatura de 480 px (0,75). Se sube a `event-photos/{event_id}/{photo_id}.webp` y `…_thumb.webp`, 3 en paralelo y como mucho 30 por subida. Después, `addPhotos` registra todas en **un solo INSERT**, así que el trigger manda una única `photos_added`. Si el INSERT falla, se borran los archivos. Los que no se pueden decodificar (p. ej. HEIC en un navegador sin soporte) se cuentan como fallidos y no bloquean el resto.
+* **Permiso para subir:** `canAddPhotos` en `getEvent` replica `can_contribute_photos` (participante que va o asistió, evento empezado y no cancelado). La RLS de la tabla y la política del bucket lo vuelven a comprobar.
+* **Galería:** `getEvent` firma en lote foto y miniatura (`signUrls`, 1 h, hasta 300 fotos). Visor con anterior/siguiente y flechas del teclado. `deletePhoto` borra la fila (RLS: quien la subió o el organizador) y después los dos archivos.
+* **Cimas:** `PeakPicker` en propuestas y eventos de senderismo o cima. Busca en el catálogo compartido (`searchPeaks`, `ilike`) o crea una cima (`createPeak`; si choca con `UNIQUE (lower(name), altitude_m)`, devuelve la existente). `syncPeaks` deja `plan_peaks` / `event_peaks` igual que el formulario. Como `event_peaks` solo concede `UPDATE` en las columnas de la ascensión, se inserta con `ON CONFLICT DO NOTHING` y luego se actualizan desnivel y km cima a cima. Al cambiar a una categoría sin cimas, se quitan.
+* **Datos de la ascensión:** desnivel (entero; acepta "1.450") y km (acepta coma) en el formulario del evento y al marcarlo como realizado. Son los que suman `elevation_gain_m` y `distance_km` en `compute_stats`.
+* **Estadísticas:** `UserStats` incluye ascensiones, cima más alta y la fecha de la primera experiencia. El historial muestra las cimas conseguidas (respetando los filtros) y el perfil de un amigo muestra sus estadísticas propias, además de las compartidas.
+* **Pruebas:** pgTAP `05_photos` y `06_peaks`, y unitarias de esquemas y agregados. Las políticas de Storage se comprobaron contra la BD local con usuarios temporales (subir, firmar, descargar y borrar; un no participante no puede).
+* **Pendiente:** pies de foto (la columna `caption` ya existe), elegir una foto como portada y paginar la galería si un evento pasa de 300 fotos.
+
 ### 6.8 Pendiente de decidir
 
 * **Borrado de cuenta:** hoy, borrar un usuario de `auth.users` borra en cascada sus propuestas y eventos. Antes de lanzarlo (Fase 7) conviene **anonimizar** en lugar de borrar, para no romper el historial de los amigos.
