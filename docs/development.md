@@ -30,6 +30,19 @@ npm run dev               # http://localhost:3000
 
 Supabase Studio, la interfaz para explorar la BD local, está en <http://127.0.0.1:54323>.
 
+## Ver el diseño sin Supabase
+
+Para revisar las pantallas maquetadas (datos de ejemplo de `src/mocks/data.ts`) sin Docker:
+
+```bash
+# .env.local
+NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=design-preview
+DESIGN_PREVIEW=1
+```
+
+`npm run dev` y abre <http://localhost:3000>. `DESIGN_PREVIEW` solo tiene efecto en desarrollo.
+
 ## Flujo de trabajo con la base de datos
 
 * Cada cambio de esquema es una **migración nueva** en `supabase/migrations/`. Nunca se edita una migración ya desplegada.
