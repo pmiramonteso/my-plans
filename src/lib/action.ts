@@ -55,9 +55,11 @@ export function mapDbError(error: DbError): AppErrorCode {
 }
 
 // Devuelve los datos o lanza un AppError ya traducido a código de la app.
-export function unwrap<T>({ data, error }: { data: T; error: DbError }): T {
+// Sin error, PostgREST siempre trae `data` (los tipos de supabase-js no lo
+// estrechan); en las RPC que devuelven void es null.
+export function unwrap<T>({ data, error }: { data: T | null; error: DbError }): T {
   if (error) throw new AppError(mapDbError(error));
-  return data;
+  return data as T;
 }
 
 // Envoltorio para Server Actions: valida con Zod, captura errores y nunca

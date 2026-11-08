@@ -4,7 +4,6 @@ import Link from "next/link";
 import { History, LogOut, Monitor, Moon, Settings, Sun, UserRound } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
-import { toast } from "sonner";
 
 import { UserAvatar } from "@/components/shared/user-avatar";
 import {
@@ -20,6 +19,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { signOut } from "@/features/auth/actions";
 import type { ProfileSummary } from "@/features/profiles/types";
 import { cn } from "@/lib/utils";
 
@@ -98,8 +98,7 @@ export function UserMenu({
           </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
-        {/* TODO(Fase 3): Server Action signOut. */}
-        <DropdownMenuItem onSelect={() => toast(t("common.demoAction"))}>
+        <DropdownMenuItem onSelect={() => signOut()}>
           <LogOut /> {t("nav.logout")}
         </DropdownMenuItem>
       </DropdownMenuContent>

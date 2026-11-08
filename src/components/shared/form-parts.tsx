@@ -14,10 +14,13 @@ import { cn } from "@/lib/utils";
 // Piezas de formulario con inputs nativos (radio/checkbox): funcionan con
 // FormData y con React Hook Form (`register`) sin adaptadores.
 
+// Con `error`, el mensaje sustituye a la pista. El input debe llevar
+// aria-invalid y aria-describedby={`${htmlFor}-message`}.
 export function Field({
   label,
   htmlFor,
   hint,
+  error,
   optional,
   children,
   className,
@@ -25,11 +28,13 @@ export function Field({
   label: string;
   htmlFor?: string;
   hint?: string;
+  error?: string;
   optional?: boolean;
   children: React.ReactNode;
   className?: string;
 }) {
   const t = useTranslations("common");
+  const message = error ?? hint;
   return (
     <div className={cn("space-y-2", className)}>
       <Label htmlFor={htmlFor}>
@@ -37,7 +42,15 @@ export function Field({
         {optional && <span className="text-muted-foreground font-normal">({t("optional")})</span>}
       </Label>
       {children}
-      {hint && <p className="text-muted-foreground text-xs">{hint}</p>}
+      {message && (
+        <p
+          id={htmlFor && `${htmlFor}-message`}
+          role={error ? "alert" : undefined}
+          className={cn("text-xs", error ? "text-destructive" : "text-muted-foreground")}
+        >
+          {message}
+        </p>
+      )}
     </div>
   );
 }

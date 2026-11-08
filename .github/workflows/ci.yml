@@ -29,6 +29,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: supabase/setup-cli@v1
         with:
-          version: latest
+          version: 3.0.0 # la misma que `npm run db:types` (devDependency)
       - run: supabase db start
       - run: supabase test db
+      # Los tipos se generan desde la BD real: el archivo versionado debe coincidir.
+      - run: supabase gen types typescript --local --schema public > database.generated.ts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: database-types
+          path: database.generated.ts
+      - name: Los tipos versionados están al día (si falla, `npm run db:types` o usa el artefacto)
+        run: diff -u src/types/database.ts database.generated.ts

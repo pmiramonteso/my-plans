@@ -1,3 +1,5 @@
+import type { Locale } from "@/i18n/config";
+
 // Datos públicos de un perfil (nunca el email).
 export type ProfileSummary = {
   id: string;
@@ -8,6 +10,9 @@ export type ProfileSummary = {
 
 export type Profile = ProfileSummary & {
   bio: string | null;
-  locale: "es" | "en" | "ca";
+  locale: Locale;
   timezone: string;
 };
+
+// Perfil del usuario con sesión: antes del onboarding aún no tiene username.
+export type SessionProfile = Omit<Profile, "username"> & { username: string | null };

@@ -1,12 +1,14 @@
 "use client";
 
+import { useOptimistic, useTransition } from "react";
 import { Monitor, Moon, Sun } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
-import { toast } from "sonner";
 
 import { Field } from "@/components/shared/form-parts";
-import { LOCALES } from "@/i18n/config";
+import { setLocale } from "@/features/profiles/actions";
+import { LOCALES, type Locale } from "@/i18n/config";
+import { reportActionError } from "@/lib/form";
 import { cn } from "@/lib/utils";
 
 const THEMES = [
@@ -17,17 +19,27 @@ const THEMES = [
 
 export function PreferencesForm() {
   const t = useTranslations();
-  const locale = useLocale();
+  const locale = useLocale() as Locale;
+  const [shownLocale, setShownLocale] = useOptimistic(locale);
+  const [, startTransition] = useTransition();
   const { theme, setTheme } = useTheme();
+
+  // Guarda el idioma en el perfil y en la cookie; al refrescar, el proxy sirve
+  // la app en el idioma nuevo.
+  const changeLocale = (next: string) =>
+    startTransition(async () => {
+      setShownLocale(next as Locale);
+      const result = await setLocale({ locale: next as Locale });
+      if (!result.ok) reportActionError(result, t);
+    });
 
   return (
     <div className="space-y-5">
-      {/* TODO(Fase 3): Server Action que guarde profiles.locale y la cookie NEXT_LOCALE. */}
       <Field label={t("settings.language")}>
         <Segmented
           name="locale"
-          value={locale}
-          onChange={() => toast(t("common.demoAction"))}
+          value={shownLocale}
+          onChange={changeLocale}
           options={LOCALES.map((l) => ({ value: l, label: t(`languages.${l}`) }))}
         />
       </Field>

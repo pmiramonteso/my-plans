@@ -43,8 +43,12 @@ DESIGN_PREVIEW=1
 
 `npm run dev` y abre <http://localhost:3000>. `DESIGN_PREVIEW` solo tiene efecto en desarrollo.
 
+Para iniciar sesión de verdad (Google) sigue `docs/setup-supabase-google.md`.
+
 ## Flujo de trabajo con la base de datos
 
 * Cada cambio de esquema es una **migración nueva** en `supabase/migrations/`. Nunca se edita una migración ya desplegada.
 * Después de cambiar el esquema: `npm run db:reset && npm run db:types && npm run db:test`.
+* Sin Docker: el CI genera los tipos en el artefacto `database-types` del job `database`
+  (`gh run download <id> -n database-types`) y comprueba que `src/types/database.ts` está al día.
 * Toda tabla, vista o función nueva concede sus privilegios explícitamente (ver `docs/architecture.md` §6.7) y lleva sus pruebas en `supabase/tests/database/`.

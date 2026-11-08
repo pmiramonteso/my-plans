@@ -12,7 +12,7 @@ Documento vivo. Recoge la propuesta aprobada en la Fase 1 y las decisiones tomad
 | Tema | Decisión |
 |---|---|
 | Entorno local | Docker Desktop + Supabase CLI (BD local, migraciones y pruebas pgTAP). |
-| Supabase / Google OAuth | Se crean en la Fase 3 siguiendo la guía `docs/setup-supabase-google.md`. |
+| Supabase / Google OAuth | Guía en `docs/setup-supabase-google.md` (Fase 3). |
 | Idiomas | Español (por defecto), inglés y catalán desde el primer día (`next-intl`). |
 | Visibilidad | `private` · `invited` · `friends`. **Preparado para `public` en el futuro** (ver §6.3). |
 | Permisos | En el MVP solo el creador edita, convierte y marca como realizado. **Preparado para co-organizadores** (ver §6.4). |
@@ -330,6 +330,16 @@ No cambia ninguna tabla ni ninguna consulta de la app.
 * **Vista previa sin Supabase:** con `DESIGN_PREVIEW=1` en `.env.local` el proxy no exige sesión. Solo funciona con `next dev` (en producción no tiene efecto).
 * **Diseño "Outdoor cálido":** tokens en `src/app/globals.css` (crema `#F7F3EC`, verde bosque `#2F5D46`, terracota `#C8643B`), con tema claro y oscuro (`next-themes`, clase `.dark`). Los colores de categoría usan los nombres de `categories.color` (`pine`, `granite`…). Tipografía: Fraunces (títulos) e Inter (texto). La terracota no llega a 4.5:1 sobre crema: para texto se usa `accent-strong`.
 * **shadcn/ui** (estilo `radix-nova`) en `src/components/ui/`; botones e inputs ampliados a 40 px de alto para uso táctil.
+
+### 6.10 Notas de implementación (Fase 3)
+
+* **Sesión:** `features/profiles/queries.ts` es la capa de acceso. `getSessionProfile()` lee `getClaims()` y el perfil una sola vez por petición (`React.cache`). `getCurrentProfile()` además exige `username` y, si falta, redirige a `/onboarding`. El layout de `(app)` lo comprueba dentro de `<Suspense>`.
+* **OAuth:** `signInWithGoogle` (Server Action) → Google → Supabase → `/auth/callback` (route handler fuera de `[locale]`). `next` pasa por `safeNextPath()`, que solo admite rutas internas. El callback copia `profiles.locale` a la cookie de idioma.
+* **Refrescar tras escribir:** las lecturas no se cachean (dependen de la sesión), así que los actions llaman a `refresh()` de `next/cache` en lugar de `revalidatePath`.
+* **Errores en formularios:** los esquemas Zod usan claves (`validation.<clave>`) como mensaje. `reportActionError()` (`lib/form.ts`) pinta los errores de campo o un toast con `errors.<código>`. Un `conflict` en `username` se muestra como "ya está cogido".
+* **Avatares:** se comprimen en el navegador (`lib/images.ts`, 512 px WebP) y se suben con la sesión a `avatars/{id}/{uuid}.webp`. `setAvatar` guarda la URL pública y borra la foto anterior.
+* **Tipos de la BD:** el job `database` de CI genera `database.generated.ts` (artefacto `database-types`) y falla si `src/types/database.ts` no coincide. La CLI está fijada a la misma versión que la devDependency.
+* **Datos reales vs. de ejemplo:** perfil, amigos, solicitudes, búsqueda, estadísticas y el contador de notificaciones ya leen de Supabase. Propuestas, eventos, agenda, historial y la lista de notificaciones siguen con `src/mocks` hasta sus fases. Con `DESIGN_PREVIEW=1` todo usa datos de ejemplo.
 
 ### 6.8 Pendiente de decidir
 
