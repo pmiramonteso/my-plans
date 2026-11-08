@@ -129,7 +129,10 @@
     "cancelTitle": "Cancel this event?",
     "cancelHint": "We'll let participants know. If it came from a proposal, the proposal will be open again.",
     "cancelledHint": "This event has been cancelled.",
-    "attendeesCount": "{count, plural, one {# attendee} other {# attendees}}"
+    "attendeesCount": "{count, plural, one {# attendee} other {# attendees}}",
+    "completedHint": "This event has already happened.",
+    "completedPhotosHint": "Share your photos from the day with everyone.",
+    "noPhotosYours": "Be the first to upload yours."
   },
   "plans": {
     "title": "Proposals",
@@ -328,5 +331,19 @@
     "event_not_started": "The event hasn't started yet.",
     "conflict": "That already exists. Try another value.",
     "unknown": "Something went wrong. Please try again."
+  },
+  "photos": {
+    "uploading": "Uploading {done} of {total}…",
+    "saving": "Saving…",
+    "uploaded": "{count, plural, one {# photo uploaded} other {# photos uploaded}}",
+    "failed": "{count, plural, one {# photo couldn't be uploaded} other {# photos couldn't be uploaded}}",
+    "tooMany": "You can upload up to {max} photos at a time. We'll upload the first {max}.",
+    "open": "Photo {index} of {total}",
+    "by": "Uploaded by {name}",
+    "previous": "Previous photo",
+    "next": "Next photo",
+    "delete": "Delete",
+    "deleteTitle": "Delete this photo?",
+    "deleteHint": "It will be removed for all participants. This can't be undone."
   }
 }

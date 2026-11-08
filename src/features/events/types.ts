@@ -44,5 +44,18 @@ export type EventDetail = EventSummary & {
     elevationGainM: number | null;
     distanceKm: number | null;
   }[];
-  photos: { id: string; url: string; width: number; height: number }[];
+  photos: EventPhoto[];
+  // Participante que va o asistió, con el evento empezado y no cancelado
+  // (private.can_contribute_photos).
+  canAddPhotos: boolean;
+};
+
+export type EventPhoto = {
+  id: string;
+  url: string; // signed URL de la foto (2560 px)
+  thumbUrl: string; // signed URL de la miniatura (480 px)
+  width: number;
+  height: number;
+  uploader: ProfileSummary | null;
+  canDelete: boolean; // la subí yo u organizo el evento
 };

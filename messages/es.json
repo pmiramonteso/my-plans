@@ -129,7 +129,10 @@
     "cancelTitle": "¿Cancelar el evento?",
     "cancelHint": "Avisaremos a los participantes. Si venía de una propuesta, esta vuelve a quedar abierta.",
     "cancelledHint": "Este evento se ha cancelado.",
-    "attendeesCount": "{count, plural, one {# asistente} other {# asistentes}}"
+    "attendeesCount": "{count, plural, one {# asistente} other {# asistentes}}",
+    "completedHint": "Este evento ya se ha realizado.",
+    "completedPhotosHint": "Comparte las fotos de ese día con el resto.",
+    "noPhotosYours": "Sé la primera persona en subir las tuyas."
   },
   "plans": {
     "title": "Propuestas",
@@ -328,5 +331,19 @@
     "event_not_started": "El evento todavía no ha empezado.",
     "conflict": "Ya existe. Prueba con otro valor.",
     "unknown": "Algo ha fallado. Inténtalo de nuevo."
+  },
+  "photos": {
+    "uploading": "Subiendo {done} de {total}…",
+    "saving": "Guardando…",
+    "uploaded": "{count, plural, one {# foto subida} other {# fotos subidas}}",
+    "failed": "{count, plural, one {No se pudo subir # foto} other {No se pudieron subir # fotos}}",
+    "tooMany": "Puedes subir hasta {max} fotos a la vez. Subimos las primeras {max}.",
+    "open": "Foto {index} de {total}",
+    "by": "Subida por {name}",
+    "previous": "Foto anterior",
+    "next": "Foto siguiente",
+    "delete": "Eliminar",
+    "deleteTitle": "¿Eliminar la foto?",
+    "deleteHint": "Se borrará para todos los participantes. Esta acción no se puede deshacer."
   }
 }
